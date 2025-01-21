@@ -15,7 +15,7 @@ The E-ADV mobile app empowers users to deliver impactful presentations, track au
 ## Table of Contents
 
 - [Architecture](documentation/project-structure.md)
-- [Configuration](documentation/Configuration.md)
+- [Configuration](documentation/configuration.md)
 - [Installation](documentation/installation.md)
 - [Run the project](documentation/usage.md)
 - [scripts](documentation/scripts.md)
