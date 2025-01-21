@@ -20,7 +20,7 @@ The E-ADV mobile app empowers users to deliver impactful presentations, track au
 - [Run the project](documentation/usage.md)
 - [scripts](documentation/scripts.md)
 
-# Key Features of E-ADV Server
+# Key Features of E-ADV Application
 
 ## Presentation Management
 - Enables product managers to create, update, and manage interactive pharmaceutical presentations.
