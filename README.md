@@ -2,6 +2,12 @@
 
 E-ADV is an innovative mobile application designed to revolutionize the work of pharmaceutical representatives and medical sales teams. It offers a comprehensive solution for creating, presenting, and evaluating pharmaceutical product presentations in an interactive and efficient manner using advanced features.
 
+## Learn More  
+
+For a detailed overview and insights into the E-ADV mobile app, check out my Medium article:  
+
+[Read the full article on Medium](https://medium.com/@mouadhalli1337/e-adv-revolutionizing-pharmaceutical-sales-with-an-interactive-mobile-app-556ef724ae19)
+
 ## Overview
 
 The E-ADV mobile app empowers users to deliver impactful presentations, track audience engagement, and collect valuable insights to enhance their sales strategies. With an intuitive user interface and powerful features, it ensures seamless interactions with healthcare professionals.
