@@ -1,6 +1,7 @@
-# Project Structure
+# Architecture
 
-## Root Directory
+## Project Structure
+
 - `.env`: Environment variables.
 - `.gitignore`: Git ignore file.
 - `app/`: Main application directory.
