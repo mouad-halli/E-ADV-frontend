@@ -49,15 +49,20 @@ export default function IndexScreen() {
     }
 
     const handleGetUserLocation = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync()
+        try {
+            let { status } = await Location.requestForegroundPermissionsAsync()
+            
+            if (status !== 'granted') {
+                console.error('Permission to access location was denied')
+                Alert.alert("location permission denied")
+                return
+            }
+            return await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced })
 
-        if (status !== 'granted') {
-            console.error('Permission to access location was denied')
-            Alert.alert("location permission denied")
-            return
+            
+        } catch (error: any) {
+            console.log(error)
         }
-
-        return await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced })
     }
 
     useEffect(() => {
@@ -68,6 +73,8 @@ export default function IndexScreen() {
                 setIsLoading(true)
 
                 let location = await handleGetUserLocation()
+                console.log("user location -> ", location);
+                
 
                 if (!location)
                     return
@@ -100,8 +107,55 @@ export default function IndexScreen() {
         <SafeAreaView className=" pt-28 px-8 h-full flex">  
                 <View className="flex-1 gap-y-4 py-5">
                     <View style={{ maxWidth: "70%", width: "100%" }} className=" mx-auto bg-accent p-4 rounded-xl">
-                    <Text style={[Styles.textLg]}>Doctor information :</Text>
+                    <Text style={[Styles.textLg]}>informations sur le médecin :</Text>
                     <View className="flex-row justify-around">
+                        <View className="gap-y-1 my-3">
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>nom</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={[Styles.text, { maxWidth: 170}]}>
+                                {selectedAppointment.doctor.name}
+                            </Text>
+                        </View>
+                        <View className="gap-y-1 my-3">
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Spécialité</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={[Styles.text, { maxWidth: 170}]}>
+                                {selectedAppointment.doctor.speciality}
+                            </Text>
+                        </View>
+                        <View className="gap-y-1 my-3">
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Contact</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={[Styles.text, { maxWidth: 170}]}>
+                                {selectedAppointment.doctor.contact}
+                            </Text>
+                        </View>
+                        <View className="gap-y-1 my-3">
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Ville</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={[Styles.text, { maxWidth: 170}]}>
+                                {selectedAppointment.doctor.city}
+                            </Text>
+                        </View>
+                        <View className="gap-y-1 my-3">
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>lieu de travail</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={[Styles.text, { maxWidth: 170}]}>
+                                {selectedAppointment.doctor.workPlace}
+                            </Text>
+                        </View>
+                    </View>
+                    {/* <View className="flex-row justify-around">
                         {(["name", "speciality", "contact", "city", "workPlace"]).map((field) => (
                             <View key={field} className="gap-y-1 my-3">
                                 <Text style={[Styles.textLg, { fontSize: 16 }]}>{field}</Text>
@@ -113,7 +167,7 @@ export default function IndexScreen() {
                                 </Text>
                             </View>
                         ))}
-                    </View>
+                    </View> */}
                 </View>
                 {!isLoading ?
                     <ProductsList

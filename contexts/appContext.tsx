@@ -1,6 +1,4 @@
 import { doctorType, externalAppointmentType } from "@/types/appointment"
-
-import { useRouter } from "expo-router"
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from "react"
 
 type appContextType = {

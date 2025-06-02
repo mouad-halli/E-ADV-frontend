@@ -81,7 +81,7 @@ const productPresentation = () => {
                             onCancelPress={() => setIsValiderModalOpen(false)}
                             onAcceptPress={handleValidatePresentation}
                             cancelBtnText='Attendre'
-                            title='General Feedback'
+                            title='Feedback General'
                             description="Veuillez écrire un commentaire général et choisir un emoji pour décrire un feedback général"
                         >
                             <FeedbackRating

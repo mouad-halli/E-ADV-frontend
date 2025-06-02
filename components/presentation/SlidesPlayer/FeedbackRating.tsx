@@ -14,8 +14,6 @@ const FeedbackRating = ({
     handleSetFeedbackRating
 }: PropTypes) => {
 
-
-
     return (
         <View className='flex-row pb-10 justify-evenly'>
             <TouchableOpacity

@@ -19,10 +19,10 @@ const useLoginForm = () => {
     )
     
     const redirectUri = makeRedirectUri({
-        scheme: 'exp',
-        path: '/',
+        scheme: 'myapp',
+        path: 'login',
     })
-    
+
     const [request, , promptAsync] = useAuthRequest(
         {
             clientId: process.env.EXPO_PUBLIC_CLIENT_ID as string,
@@ -42,6 +42,7 @@ const useLoginForm = () => {
                 console.log("request not initialized yet")
                 return
             }
+            
             setIsLoading(true)
             const codeResponse = await promptAsync()
     
@@ -58,8 +59,8 @@ const useLoginForm = () => {
 
                 const user = await msalLogin(accessToken)
                 handleUpdateUser(user)
-                setIsLoading(false)
             }
+            setIsLoading(false)
         } catch (error: any) {
 
             const errResponse = (error && error.response && error.response.data) || (error && error.message)

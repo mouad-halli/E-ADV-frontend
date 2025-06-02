@@ -11,6 +11,7 @@ import { useAppContext } from "@/contexts/appContext"
 import colors from "@/styles/colors"
 import WhiteCheckMark from "./ui/icons/WhiteCheckMark"
 import { useGlobalSearchParams } from "expo-router"
+import { router } from "expo-router"
 
 export default function Navbar({ state, descriptors, navigation }: BottomTabBarProps) {
     const { buildHref } = useLinkBuilder()
@@ -39,7 +40,11 @@ export default function Navbar({ state, descriptors, navigation }: BottomTabBarP
     return (
         <View className="w-full flex-row items-center px-8 absolute py-4">
             <View className="w-1/3">
+              <Pressable
+                onLongPress={() => router.push(__DEV__ ? "/_sitemap" : "/") }
+              >
                 <Logo />
+              </Pressable>
             </View>
         <View className="flex-1 flex-row justify-center gap-x-8" >
         {state.routes[state.index].name !== 'index' && state.routes.map((route, index) => {

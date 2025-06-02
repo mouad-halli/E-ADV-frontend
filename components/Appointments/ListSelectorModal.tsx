@@ -9,7 +9,7 @@ interface PropTypes {
     data: any[]
     listTitle?: string
     handleSelectItem: (item: any) => void
-    selectedLocation: string
+    selectedLocation: string | undefined
 }
 
 const ListSelectorModal = ({

@@ -38,10 +38,17 @@ export const UserContextProvider: FC<userProviderProps> = ({children}) => {
         const fetchUser = async () => {
             try {
                 const user = await getMe()
+                // const user: UserType = {
+                //     firstName: "patrick",
+                //     lastName: "lastPa",
+                //     email: "patrick@mail.com"
+                // }
                 setUser(user)
                 
             } catch (error: any) {
+                
                 const errResponse = (error && error.response && error.response.data) || (error && error.message)
+
                 if (error?.status === 401){
                     setUser(null)
 

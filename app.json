@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "E-ADV",
-    "slug": "E-ADV",
+    "slug": "e-adv",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/images/icon.png",
@@ -9,9 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "scheme": "myapp",
       "supportsTablet": true
     },
     "android": {
+      "scheme": "myapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

@@ -13,7 +13,7 @@ const useSlideTimeTracker = (
     const [isPaused, setIsPaused] = useState(false)
 
     useEffect(() => {
-        console.log("child render")
+        // console.log("child render")
         startTimer()
 
         AppState.addEventListener('change', async (nextAppState) => {
@@ -25,7 +25,7 @@ const useSlideTimeTracker = (
         })
 
         return () => {
-            console.log("child clean up")
+            // console.log("child clean up")
             stopTimer() // stop and set time spent on slide change
         }
     }, [currentSlideIndex])

@@ -1,6 +1,6 @@
-import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, TextInputSubmitEditingEventData, NativeSyntheticEvent } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, TextInputSubmitEditingEventData, NativeSyntheticEvent, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AppDataTable from '@/components/Appointments/AppDataTable';
+import AppDataTable, { Filters } from '@/components/Appointments/AppDataTable';
 import { globalStyles } from '../../../styles/globalStyles';
 import colors from '@/styles/colors';
 import CalendarIcon from '@/components/ui/icons/CalendarIcon';
@@ -8,39 +8,29 @@ import LocationIcon from '@/components/ui/icons/LocationIcons';
 import DateRangePickerModal, { dateRangeType } from '@/components/Appointments/DateRangePickerModal';
 import { useState } from 'react';
 import ListSelectorModal from '@/components/Appointments/ListSelectorModal';
+import { RadioButton } from 'react-native-paper';
+import useAppointments from '@/components/Appointments/useAppointments';
 
 const Appointments = () => {
 
-    const [isDatePickerModalVisible, setIsDatePickerModalVisible] = useState(false)
-    const [isListSelectorModalVisible, setIsListSelectorModalVisible] = useState(false)
-    const [searchText, setSearchText] = useState("")
-    const [selectedDateRange, setSelectedDateRange] = useState<dateRangeType>({ startDate: null, endDate: null })
-    const [selectedLocation, setSelectedLocation] = useState("")
-
-    const toggleDatePickerModal = () => {
-        setIsDatePickerModalVisible(!isDatePickerModalVisible)
-    }
-
-    const toggleListSelectorModal = () => {
-        setIsListSelectorModalVisible(!isListSelectorModalVisible)
-    }
-    
-    const handleSelectLocation = (location: string) => {
-        setSelectedLocation(location === selectedLocation ? "" : location)
-        setIsListSelectorModalVisible(false)
-    }
-
-    const handleSelectedDateRange = (dateRange: dateRangeType) => {
-        setSelectedDateRange(dateRange)
-    }
-
-
-    const handleEnterPress = (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
-        if (searchText.trim() !== "") {
-            console.log(searchText)
-            setSearchText("")
-        }
-    }
+    const {
+        searchText,
+        setSearchText,
+        handleEnterPress,
+        toggleListSelectorModal,
+        selectedLocation,
+        appointmentDisplayStatus,
+        setAppointmentDisplayStatus,
+        toggleDatePickerModal,
+        filters,
+        isListSelectorModalVisible,
+        handleSelectLocation,
+        isDatePickerModalVisible,
+        handleSelectedDateRange,
+        handleApplyFilters,
+        appointmentsList,
+        isLoading,
+    } = useAppointments()
 
     return (
         <SafeAreaView className=" pt-28 px-8 h-full flex bg-white">  
@@ -68,11 +58,45 @@ const Appointments = () => {
                     >
                         <LocationIcon />
                         <View className=''>
-                            <Text style={styles.CallendarButtonTextTop}>Location</Text>
-                            <Text style={styles.CallendarButtonTextBottom}>{selectedLocation}</Text>
+                            <Text style={styles.CallendarButtonTextTop}>Territoire</Text>
+                            <Text style={styles.CallendarButtonTextBottom}>{selectedLocation ?? "aucun"}</Text>
                         </View>
                     </TouchableOpacity>
                     <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
+                    <View className='flex-row items-center'>
+                        <Text style={styles.CallendarButtonTextBottom} >non visité</Text>
+                        <RadioButton
+                            value='notVisited'
+                            onPress={() => setAppointmentDisplayStatus(appointmentDisplayStatus === "notVisited" ? undefined : "notVisited")}
+                            status={appointmentDisplayStatus === "notVisited" ? 'checked' : 'unchecked' }
+                            uncheckedColor={colors.secondary}
+                            color={colors.primary}
+                        />
+                    </View>
+                    <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
+                    <View className='flex-row items-center'>
+                        <Text style={styles.CallendarButtonTextBottom} >visité</Text>
+                        <RadioButton
+                            value='visited'
+                            onPress={() => setAppointmentDisplayStatus(appointmentDisplayStatus === "visited" ? undefined : "visited")}
+                            status={appointmentDisplayStatus === "visited" ? 'checked' : 'unchecked' }
+                            uncheckedColor={colors.secondary}
+                            color={colors.primary}
+                        />
+                    </View>
+                </View>
+                <View className='flex-row border rounded-lg border-secondary px-5 py-2 gap-x-4'>
+                    {/* <TouchableOpacity
+                        className='rounded flex-row items-center gap-x-2'
+                        onPress={toggleListSelectorModal}
+                    >
+                        <LocationIcon />
+                        <View className=''>
+                            <Text style={styles.CallendarButtonTextTop}>Territoire</Text>
+                            <Text style={styles.CallendarButtonTextBottom}>{selectedLocation ?? "aucun"}</Text>
+                        </View>
+                    </TouchableOpacity> */}
+                    {/* <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View> */}
                     <TouchableOpacity
                         className='rounded flex-row items-center gap-x-2'
                         onPress={toggleDatePickerModal}
@@ -81,10 +105,25 @@ const Appointments = () => {
                         <View className=''>
                             <Text style={styles.CallendarButtonTextTop}>Date</Text>
                             <Text style={styles.CallendarButtonTextBottom}>{
-                            `${selectedDateRange.startDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })} / ${selectedDateRange.endDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}`
+                                filters.selectedDateRange.startDate && filters.selectedDateRange.endDate ?
+                                `${filters.selectedDateRange.startDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })} / ${filters.selectedDateRange.endDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}`
+                                :
+                                // "aucune date sélectionnée"
+                                "no date"
                             }</Text>
                         </View>
                     </TouchableOpacity>
+                    <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
+                    <Pressable
+                        className={`flex-row items-center bg-blue-900 rounded px-2 m-0.5`}
+                        onPress={handleApplyFilters}
+                    >
+                        <Text
+                            style={[globalStyles.robotoMedium, styles.ApplyFiltersButtonText]}
+                        >
+                            appliquer
+                        </Text>
+                    </Pressable>
                 </View>
                 <ListSelectorModal
                     isModalVisible={isListSelectorModalVisible}
@@ -100,11 +139,13 @@ const Appointments = () => {
                     handleSetSelectedDateRange={handleSelectedDateRange}
                 />
             </View>
-            <View className="h-full">
+            <View className="h-full pt-3">
                 <AppDataTable
-                    dateRange={selectedDateRange}
+                    isLoading={isLoading}
+                    appointmentsList={appointmentsList}
                     location={selectedLocation}
                     searchText={searchText}
+                    appointmentDisplayStatus={appointmentDisplayStatus}
                 />
             </View>
         </View>
@@ -128,6 +169,17 @@ const styles = StyleSheet.create({
         ...globalStyles.robotoMedium,
         fontSize: 11,
     },
+    CheckboxText: {
+        color: colors.primary,
+        ...globalStyles.robotoBold,
+        fontSize: 11,
+    },
+    ApplyFiltersButtonText: {
+        color: colors.white,
+        fontSize: 11,
+        wordWrap: 'break-word',
+        lineHeight: 20
+    }
 })
 
 export default Appointments

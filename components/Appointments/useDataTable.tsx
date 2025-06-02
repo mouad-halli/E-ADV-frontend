@@ -1,29 +1,24 @@
 import { useAppContext } from "@/contexts/appContext"
-import $external_api from "@/services/Api/ExternalAPI"
 import { externalAppointmentType } from "@/types/appointment"
-import { useCallback, useEffect, useState } from "react"
-import { dateRangeType } from "./DateRangePickerModal"
-import { isAppointmentVisited } from "@/services/Api/appointment"
-import { useFocusEffect, useRouter } from "expo-router"
-
-interface appointment extends externalAppointmentType {
-    isVisited: boolean
-}
+import { useEffect, useState } from "react"
+import { useRouter } from "expo-router"
+import { appointment } from "./useAppointments"
 
 const useDataTable = (
-    dateRange: dateRangeType,
-    location: string,
-    searchText: string
+    appointmentsList: appointment[],
+    location: string | undefined,
+    searchText: string,
+    appointmentDisplayStatus: "visited" | "notVisited" | undefined
 ) => {
     const { handleSetSelectedAppointment } = useAppContext()
     const router = useRouter()
 
-    const itemsPerPage = 10
+    const itemsPerPage = 9
 
     const [page, setPage] = useState<number>(0)
-    const [appointmentsList, setAppointmentsList] = useState<appointment[]>([])
+    // const [appointmentsList, setAppointmentsList] = useState<appointment[]>([])
     const [filteredAppointmentsList, setFilteredAppointmentsList] = useState<appointment[]>([])
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
 
     const handleRowPres = (appointment: externalAppointmentType) => {
         handleSetSelectedAppointment(appointment)
@@ -34,55 +29,68 @@ const useDataTable = (
         setPage(page)
     }
 
-    useFocusEffect(
-        useCallback(() => {
-            const fetchDoctors = async () => {
-                setIsLoading(true)
-                const params = {
-                    startDate: dateRange.startDate,
-                    endDate: dateRange.endDate,
-                    employeeNumber: 1234,
-                    page,
-                    limit: itemsPerPage
-                }
-                try {
-                    const appointments: externalAppointmentType[] = (await $external_api.get(`/appointments`, {params})).data
-                    if (!Array.isArray(appointments))
-                        return
-    
-                    const result: appointment[] = []
-    
-                    await Promise.all(appointments.map(async (appointment) => {
-                        try {
-                            const isVisited = await isAppointmentVisited(appointment.id)
-                            result.push({...appointment, isVisited})
-                        } catch (error: any) {
-                            const errResponse = (error?.response?.data) || error?.message
-                            console.log(errResponse)
-                        }
-                    }))
-    
-                    setAppointmentsList(result)
-                    setFilteredAppointmentsList(result)
-                    setIsLoading(false)
-                } catch (error) {
-                    console.log(error)
-                    setIsLoading(false)
-                }
-            }
-    
-            fetchDoctors()
-        }, [dateRange])
-    )
+    const handleFilterDataTable = () => {
+        return appointmentsList.filter((appointment) => {
+            const matchesLocation = !location || appointment.doctor.city.toLowerCase().includes(location.toLowerCase())
+            const matchesSearchText = appointment.doctor.name.toLowerCase().startsWith(searchText.toLowerCase())
+            const matchesDisplayStatus = appointmentDisplayStatus === "visited" && appointment.isVisited
+                                            || appointmentDisplayStatus === "notVisited" && !appointment.isVisited
+                                            || !appointmentDisplayStatus
+
+            return matchesLocation && matchesSearchText && matchesDisplayStatus
+        })
+    }
+
+    // const fetchAppointments = async () => {
+    //     setIsLoading(true)
+    //     const params = {
+    //         // startDate: dateRange.startDate,
+    //         // endDate: dateRange.endDate,
+    //         // employeeNumber: 1234,
+    //         // page,
+    //         // limit: itemsPerPage
+    //         key: "0aa96d80"
+    //     }
+    //     try {
+    //         // To be removed later
+    //         const key = "0aa96d80"
+    //         const appointments: externalAppointmentType[] = (await $external_api.get(`/appointments`, {params})).data
+    //         // const appointments: externalAppointmentType[] = []
+    //         if (!Array.isArray(appointments))
+    //             return
+    //         const result: appointment[] = []
+    //         await Promise.all(appointments.map(async (appointment) => {
+    //             try {
+    //                 // to be changed later
+    //                 const isVisited = await isAppointmentVisited(appointment.id)
+    //                 result.push({...appointment, isVisited})
+    //             } catch (error: any) {
+    //                 const errResponse = (error?.response?.data) || error?.message
+    //                 console.log(errResponse)
+    //             }
+    //         }))
+    //         setAppointmentsList(result)
+    //         setIsLoading(false)
+    //     } catch (error: any) {
+    //         console.log(error?.response)
+    //         setIsLoading(false)
+    //     }
+    // }
+
+    // const handleApplyFilters = async () => {
+    //     await fetchAppointments()
+    // }
+
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         fetchAppointments()
+    //     }, [])
+    // )
 
     useEffect(() => {
-        const filteredAppointments = appointmentsList.filter((appointment) => {
-            const matchesLocation = appointment.doctor.city.toLowerCase().includes(location.toLowerCase())
-            const matchesSearchText = appointment.doctor.name.toLowerCase().startsWith(searchText.toLowerCase())
-            return matchesLocation && matchesSearchText
-        })
-        setFilteredAppointmentsList(filteredAppointments)
-    }, [location, searchText])
+        setFilteredAppointmentsList(handleFilterDataTable())
+        setPage(0)
+    }, [location, searchText, appointmentDisplayStatus, appointmentsList])
 
     return {
         page,
@@ -92,7 +100,7 @@ const useDataTable = (
         handlePageChange,
         filteredAppointmentsList,
         handleRowPres,
-        isLoading
+        // isLoading,
     }
 }
 

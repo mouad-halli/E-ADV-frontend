@@ -21,13 +21,13 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="Appointments"
                     options={{
-                        title: "Doctors List",
+                        title: "Liste des médecins",
                     }}
                 />
                 <Tabs.Screen
                     name="products"
                     options={{
-                        title: "Products list",
+                        title: "Liste des produits",
                     }}
                 />
             </Tabs>

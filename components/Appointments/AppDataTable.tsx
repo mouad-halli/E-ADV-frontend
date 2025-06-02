@@ -9,17 +9,27 @@ import LoadingScreen from '../LoadingScreen';
 import ConfirmerIcon from '../ui/icons/ConfirmerIcon';
 import Checkmark from '../ui/icons/Checkmark';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
+import { appointment } from './useAppointments';
 
-interface PropTypes {
-    dateRange: dateRangeType,
-    location: string
-    searchText: string
+export interface Filters {
+    selectedDateRange: dateRangeType
 }
 
+interface PropTypes {
+    appointmentsList: appointment[]
+    location: string | undefined
+    searchText: string
+    appointmentDisplayStatus: "visited" | "notVisited" | undefined
+    isLoading: boolean
+}
+
+
 const AppDataTable = ({
-    dateRange,
+    isLoading,
+    appointmentsList,
     location,
-    searchText
+    searchText,
+    appointmentDisplayStatus
 }: PropTypes) => {
     const {
         page,
@@ -29,8 +39,8 @@ const AppDataTable = ({
         handlePageChange,
         filteredAppointmentsList,
         handleRowPres,
-        isLoading
-    } = useDataTable(dateRange, location, searchText)
+        // isLoading
+    } = useDataTable(appointmentsList, location, searchText, appointmentDisplayStatus)
 
     if (isLoading)
         return <LoadingScreen />
@@ -42,7 +52,7 @@ const AppDataTable = ({
                 <DataTable.Title textStyle={styles.title} >Spécialité</DataTable.Title>
                 <DataTable.Title textStyle={styles.title} >Contact</DataTable.Title>
                 <DataTable.Title textStyle={styles.title} >Ville</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Work place</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >lieu de travail</DataTable.Title>
                 <DataTable.Title textStyle={styles.title} >Date</DataTable.Title>
                 <DataTable.Title textStyle={styles.title} >Visité</DataTable.Title>
             </DataTable.Header> 

@@ -40,11 +40,13 @@ const ProductsItem = ({ product/*, startProductPresentation*/ }: PropTypes) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            
             try {
                 const selectedDoctorId = getSelectedDoctor()?.id
-                if (!selectedDoctorId)
+                if (!selectedDoctorId) {
+                    setIsLoading(false)
                     return
-                setIsLoading(true)
+                }
                 const data: presentedProductDataType = (await $api.get("productPresentation/summary", { params: { doctorId: (selectedDoctorId), productId: product.id } })).data
                 if (data)
                     setProductPresentationData(data)

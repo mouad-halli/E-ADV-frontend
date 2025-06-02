@@ -6,6 +6,7 @@ import { StatusBar } from "react-native";
 import { PaperProvider } from 'react-native-paper';
 import { useEffect } from "react";
 import colors from "@/styles/colors";
+// import * as Linking from 'expo-linking'
 
 export default function RootLayout() {
     const [loaded, error] = useFonts({
