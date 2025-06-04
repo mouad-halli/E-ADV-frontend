@@ -1,15 +1,15 @@
-import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, TextInputSubmitEditingEventData, NativeSyntheticEvent, Pressable } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AppDataTable, { Filters } from '@/components/Appointments/AppDataTable';
+import AppDataTable from '@/components/Appointments/AppDataTable';
 import { globalStyles } from '../../../styles/globalStyles';
 import colors from '@/styles/colors';
 import CalendarIcon from '@/components/ui/icons/CalendarIcon';
 import LocationIcon from '@/components/ui/icons/LocationIcons';
-import DateRangePickerModal, { dateRangeType } from '@/components/Appointments/DateRangePickerModal';
-import { useState } from 'react';
+import DateRangePickerModal from '@/components/Appointments/DateRangePickerModal';
 import ListSelectorModal from '@/components/Appointments/ListSelectorModal';
-import { RadioButton } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
 import useAppointments from '@/components/Appointments/useAppointments';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const Appointments = () => {
 
@@ -18,11 +18,7 @@ const Appointments = () => {
         setSearchText,
         handleEnterPress,
         toggleListSelectorModal,
-        selectedLocation,
-        appointmentDisplayStatus,
-        setAppointmentDisplayStatus,
         toggleDatePickerModal,
-        filters,
         isListSelectorModalVisible,
         handleSelectLocation,
         isDatePickerModalVisible,
@@ -30,6 +26,10 @@ const Appointments = () => {
         handleApplyFilters,
         appointmentsList,
         isLoading,
+        handleToggleDisplayNotVisited,
+        selectedDateRange,
+        selectedLocation,
+        displayNotVisited
     } = useAppointments()
 
     return (
@@ -54,6 +54,22 @@ const Appointments = () => {
                 <View className='flex-row border rounded-lg border-secondary px-5 py-2 gap-x-4'>
                     <TouchableOpacity
                         className='rounded flex-row items-center gap-x-2'
+                        onPress={toggleDatePickerModal}
+                    >
+                        <CalendarIcon />
+                        <View className=''>
+                            <Text style={styles.CallendarButtonTextTop}>Date</Text>
+                            <Text style={styles.CallendarButtonTextBottom}>{
+                                selectedDateRange.startDate && selectedDateRange.endDate ?
+                                `${selectedDateRange.startDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })} / ${selectedDateRange.endDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}`
+                                :
+                                "no date"
+                            }</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
+                    <TouchableOpacity
+                        className='rounded flex-row items-center gap-x-2'
                         onPress={toggleListSelectorModal}
                     >
                         <LocationIcon />
@@ -65,54 +81,13 @@ const Appointments = () => {
                     <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
                     <View className='flex-row items-center'>
                         <Text style={styles.CallendarButtonTextBottom} >non visité</Text>
-                        <RadioButton
-                            value='notVisited'
-                            onPress={() => setAppointmentDisplayStatus(appointmentDisplayStatus === "notVisited" ? undefined : "notVisited")}
-                            status={appointmentDisplayStatus === "notVisited" ? 'checked' : 'unchecked' }
+                        <Checkbox
+                            status={displayNotVisited ? "checked" : "unchecked"}
+                            onPress={handleToggleDisplayNotVisited}
                             uncheckedColor={colors.secondary}
                             color={colors.primary}
                         />
                     </View>
-                    <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
-                    <View className='flex-row items-center'>
-                        <Text style={styles.CallendarButtonTextBottom} >visité</Text>
-                        <RadioButton
-                            value='visited'
-                            onPress={() => setAppointmentDisplayStatus(appointmentDisplayStatus === "visited" ? undefined : "visited")}
-                            status={appointmentDisplayStatus === "visited" ? 'checked' : 'unchecked' }
-                            uncheckedColor={colors.secondary}
-                            color={colors.primary}
-                        />
-                    </View>
-                </View>
-                <View className='flex-row border rounded-lg border-secondary px-5 py-2 gap-x-4'>
-                    {/* <TouchableOpacity
-                        className='rounded flex-row items-center gap-x-2'
-                        onPress={toggleListSelectorModal}
-                    >
-                        <LocationIcon />
-                        <View className=''>
-                            <Text style={styles.CallendarButtonTextTop}>Territoire</Text>
-                            <Text style={styles.CallendarButtonTextBottom}>{selectedLocation ?? "aucun"}</Text>
-                        </View>
-                    </TouchableOpacity> */}
-                    {/* <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View> */}
-                    <TouchableOpacity
-                        className='rounded flex-row items-center gap-x-2'
-                        onPress={toggleDatePickerModal}
-                    >
-                        <CalendarIcon />
-                        <View className=''>
-                            <Text style={styles.CallendarButtonTextTop}>Date</Text>
-                            <Text style={styles.CallendarButtonTextBottom}>{
-                                filters.selectedDateRange.startDate && filters.selectedDateRange.endDate ?
-                                `${filters.selectedDateRange.startDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })} / ${filters.selectedDateRange.endDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}`
-                                :
-                                // "aucune date sélectionnée"
-                                "no date"
-                            }</Text>
-                        </View>
-                    </TouchableOpacity>
                     <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
                     <Pressable
                         className={`flex-row items-center bg-blue-900 rounded px-2 m-0.5`}
@@ -140,13 +115,15 @@ const Appointments = () => {
                 />
             </View>
             <View className="h-full pt-3">
-                <AppDataTable
-                    isLoading={isLoading}
-                    appointmentsList={appointmentsList}
-                    location={selectedLocation}
-                    searchText={searchText}
-                    appointmentDisplayStatus={appointmentDisplayStatus}
-                />
+                {isLoading ?
+                    <LoadingScreen />
+                    :
+                    <AppDataTable
+                        appointmentsList={appointmentsList}
+                        searchText={searchText}
+                        displayNotVisited={displayNotVisited}
+                    />
+                }
             </View>
         </View>
         </SafeAreaView>

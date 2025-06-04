@@ -4,32 +4,21 @@ import { StyleSheet, View, Text } from 'react-native';
 import colors from '@/styles/colors';
 import { globalStyles } from '@/styles/globalStyles';
 import useDataTable from './useDataTable';
-import { dateRangeType } from './DateRangePickerModal';
 import LoadingScreen from '../LoadingScreen';
-import ConfirmerIcon from '../ui/icons/ConfirmerIcon';
-import Checkmark from '../ui/icons/Checkmark';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
 import { appointment } from './useAppointments';
 
-export interface Filters {
-    selectedDateRange: dateRangeType
-}
-
 interface PropTypes {
     appointmentsList: appointment[]
-    location: string | undefined
     searchText: string
-    appointmentDisplayStatus: "visited" | "notVisited" | undefined
-    isLoading: boolean
+    displayNotVisited: boolean
 }
 
 
 const AppDataTable = ({
-    isLoading,
     appointmentsList,
-    location,
     searchText,
-    appointmentDisplayStatus
+    displayNotVisited
 }: PropTypes) => {
     const {
         page,
@@ -39,11 +28,7 @@ const AppDataTable = ({
         handlePageChange,
         filteredAppointmentsList,
         handleRowPres,
-        // isLoading
-    } = useDataTable(appointmentsList, location, searchText, appointmentDisplayStatus)
-
-    if (isLoading)
-        return <LoadingScreen />
+    } = useDataTable(appointmentsList, searchText, displayNotVisited)
 
     return (
         <DataTable>
@@ -57,20 +42,20 @@ const AppDataTable = ({
                 <DataTable.Title textStyle={styles.title} >Visité</DataTable.Title>
             </DataTable.Header> 
             {Array.isArray(filteredAppointmentsList) && filteredAppointmentsList.slice(from, to).map((appointment) => (
-                <DataTable.Row onPress={() => handleRowPres(appointment)} style={styles.row} key={appointment.id}>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.name}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.speciality}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.contact}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.city}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.workPlace}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{appointment.doctor.workPlace}</DataTable.Cell>
-                    <DataTable.Cell textStyle={styles.text}>{new Date(appointment.appointmentDate).toLocaleDateString()}</DataTable.Cell>
+                <DataTable.Row onPress={() => handleRowPres(appointment)} style={[appointment.isVisited ? styles.visitedAppointmentRow : styles.row]} key={appointment.id}>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.name}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.speciality}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.contact}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.city}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.workPlace}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.workPlace}</DataTable.Cell>
+                    <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{new Date(appointment.appointmentDate).toLocaleDateString()}</DataTable.Cell>
                     <DataTable.Cell textStyle={[styles.text]}>
-                        {appointment.isVisited ?
-                            <Checkmark />
-                            :
-                            <AntDesign name="close" size={24} color="black" />
-                        }
+                        <AntDesign
+                            name={appointment.isVisited ? "check" : "close"}
+                            color={appointment.isVisited ? "green" : "black" }
+                            size={24}
+                        />
                     </DataTable.Cell>
                 </DataTable.Row>
             ))} 
@@ -102,8 +87,17 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: '#ccc',
     },
+    visitedAppointmentRow: {
+        borderBottomWidth: 2,
+        borderBottomColor: '#ccc',
+    },
     text: {
         color: colors.black,
+        fontSize: 14,
+        ...globalStyles.roboto
+    },
+    visitedAppointmentRowText: {
+        color: "green",
         fontSize: 14,
         ...globalStyles.roboto
     },

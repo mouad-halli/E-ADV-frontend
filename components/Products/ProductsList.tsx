@@ -1,9 +1,10 @@
 import { FlatList, View } from "react-native"
 import ProductsItem from "./ProductsItem"
-import { externalProductType } from "@/app/(main)/(tabs)/products"
+import { externalProductType } from "@/types/productPresentation"
+import { presentedProductType } from "@/contexts/presentationProductsContext"
 
 interface PropTypes {
-    products: externalProductType[]
+    products: presentedProductType[]
     // startProductPresentation: (productId: string) => void
 }
 

@@ -1,14 +1,20 @@
-import React, { useCallback, useState } from 'react'
-import { Filters } from './AppDataTable'
+import { useCallback, useState } from 'react'
 import { dateRangeType } from './DateRangePickerModal'
 import { NativeSyntheticEvent, TextInputSubmitEditingEventData } from 'react-native'
 import { externalAppointmentType } from '@/types/appointment'
 import { isAppointmentVisited } from '@/services/Api/appointment'
 import $external_api from '@/services/Api/ExternalAPI'
 import { useFocusEffect } from 'expo-router'
+import { getWeekStartAndEnd } from '@/utils/dates'
 
 export interface appointment extends externalAppointmentType {
     isVisited: boolean
+}
+
+export interface Filters {
+    selectedDateRange: dateRangeType
+    selectedLocation: string | undefined
+    displayNotVisited: boolean
 }
 
 const useAppointments = (
@@ -17,16 +23,16 @@ const useAppointments = (
     const [isDatePickerModalVisible, setIsDatePickerModalVisible] = useState(false)
     const [isListSelectorModalVisible, setIsListSelectorModalVisible] = useState(false)
     const [searchText, setSearchText] = useState("")
-    const [filters, setFilters] = useState<Filters>({
-        selectedDateRange: { startDate: null, endDate: null }
-    })
-    // const [selectedDateRange, setSelectedDateRange] = useState<dateRangeType>({ startDate: null, endDate: null })
-    const [selectedLocation, setSelectedLocation] = useState<string>()
-    const [appointmentDisplayStatus, setAppointmentDisplayStatus] = useState<"visited" | "notVisited">()
-
+    const [selectedDateRange, setSelectedDateRange] = useState(getWeekStartAndEnd(new Date()))
+    const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined)
+    const [displayNotVisited, setDisplayNotVisited] = useState<boolean>(false)
+    // const [filters, setFilters] = useState<Filters>({
+    //     selectedDateRange: getWeekStartAndEnd(new Date()),
+    //     selectedLocation: undefined,
+    //     notVisited: false
+    // })
     // const [page, setPage] = useState<number>(0)
     const [appointmentsList, setAppointmentsList] = useState<appointment[]>([])
-    // const [filteredAppointmentsList, setFilteredAppointmentsList] = useState<appointment[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
     const toggleDatePickerModal = () => {
@@ -38,14 +44,19 @@ const useAppointments = (
     }
     
     const handleSelectLocation = (location: string) => {
-        setSelectedLocation(location === selectedLocation ? "" : location)
+        // setFilters((prevState) => ({...prevState, selectedLocation: location === prevState.selectedLocation ? undefined : location}))
+        setSelectedLocation(location)
         setIsListSelectorModalVisible(false)
     }
 
     const handleSelectedDateRange = (newDateRange: dateRangeType) => {
+        // setFilters((prevState) => ({...prevState, selectedDateRange: newDateRange}))
+        setSelectedDateRange(newDateRange)
+    }
 
-        // setSelectedDateRange(dateRange)
-        setFilters((prevState) => ({...prevState, selectedDateRange: newDateRange}))
+    const handleToggleDisplayNotVisited = () => {
+        // setFilters((prevState) => ({...prevState, notVisited: !prevState.notVisited}))
+        setDisplayNotVisited(!displayNotVisited)
     }
 
     const handleEnterPress = (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
@@ -57,24 +68,21 @@ const useAppointments = (
     const fetchAppointments = async () => {
         setIsLoading(true)
         const params = {
-            // startDate: dateRange.startDate,
-            // endDate: dateRange.endDate,
-            // employeeNumber: 1234,
+            startDate: selectedDateRange.startDate,
+            endDate: selectedDateRange.endDate,
+            location: selectedLocation,
+            employeeNumber: 1234,
             // page,
             // limit: itemsPerPage
-            key: "0aa96d80"
+            key: "82082af0"
         }
         try {
-            // To be removed later
-            const key = "0aa96d80"
             const appointments: externalAppointmentType[] = (await $external_api.get(`/appointments`, {params})).data
-            // const appointments: externalAppointmentType[] = []
             if (!Array.isArray(appointments))
                 return
             const result: appointment[] = []
             await Promise.all(appointments.map(async (appointment) => {
                 try {
-                    // to be changed later
                     const isVisited = await isAppointmentVisited(appointment.id)
                     result.push({...appointment, isVisited})
                 } catch (error: any) {
@@ -105,11 +113,7 @@ const useAppointments = (
         setSearchText,
         handleEnterPress,
         toggleListSelectorModal,
-        selectedLocation,
-        appointmentDisplayStatus,
-        setAppointmentDisplayStatus,
         toggleDatePickerModal,
-        filters,
         isListSelectorModalVisible,
         handleSelectLocation,
         isDatePickerModalVisible,
@@ -117,6 +121,10 @@ const useAppointments = (
         handleApplyFilters,
         appointmentsList,
         isLoading,
+        handleToggleDisplayNotVisited,
+        selectedDateRange,
+        selectedLocation,
+        displayNotVisited,
     }
 }
 

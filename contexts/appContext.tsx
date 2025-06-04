@@ -1,8 +1,12 @@
+// import { externalProductType } from "@/app/(main)/(tabs)/products"
 import { doctorType, externalAppointmentType } from "@/types/appointment"
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from "react"
+// import { useUserContext } from "./userContext"
+// import { getUserProducts } from "@/services/Api/ExternalAPI"
 
 type appContextType = {
     selectedAppointment: externalAppointmentType | undefined
+    // presentationProducts: externalProductType[] | undefined
     handleSetSelectedAppointment: (appointment: externalAppointmentType) => void
     handleRemoveSelectedAppointment: () => void
     isAppointmentSelected: () => boolean
@@ -18,7 +22,9 @@ type appProviderProps = { children: ReactNode }
 
 export const AppContextProvider: FC<appProviderProps> = ({children}) => {
 
+    // const { user } = useUserContext()
     const [selectedAppointment, setSelectedAppointment] = useState<externalAppointmentType>()
+    // const [presentationProducts, setPresentationProducts] = useState<externalProductType[]>()
 
     const getSelectedAppointmentId = () => selectedAppointment !== undefined ? selectedAppointment.id : ""
     const getSelectedDoctor = () => selectedAppointment?.doctor
@@ -33,16 +39,26 @@ export const AppContextProvider: FC<appProviderProps> = ({children}) => {
 
     const isAppointmentSelected = () => selectedAppointment !== undefined
 
+    // useEffect(() => {
+    //     const fetchPresentationProducts = async () => {
+    //         const products = await getUserProducts()
+    //         setPresentationProducts(products)
+    //     }
+
+    //     fetchPresentationProducts()
+    // }, [user])
+
     const value = useMemo(
         () => ({
             selectedAppointment,
+            // presentationProducts,
             handleSetSelectedAppointment,
             handleRemoveSelectedAppointment,
             isAppointmentSelected,
             getSelectedAppointmentId,
             getSelectedDoctor
         })
-        , [selectedAppointment]
+        , [selectedAppointment/*, presentationProducts*/]
     )
 
     return (

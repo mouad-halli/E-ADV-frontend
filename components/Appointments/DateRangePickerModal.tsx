@@ -20,11 +20,12 @@ const DateRangePickerModal = ({
     isModalVisible,
     toggleModal,
     handleSetSelectedDateRange
-
 }: PropTypes) => {
+
   const [selectedRange, setSelectedRange] = useState<dateRangeType>({ startDate: null, endDate: null })
 
     const onDayPress = (day: DateData) => {
+
         const { dateString } = day
     
         if (!selectedRange.startDate) {

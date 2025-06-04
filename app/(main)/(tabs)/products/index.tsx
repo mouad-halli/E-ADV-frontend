@@ -12,24 +12,23 @@ import { useGlobalSearchParams, useRouter } from "expo-router";
 import { getUserProducts } from '@/services/Api/ExternalAPI';
 import { AddAppointment, getAppointmentByVisiteId } from "@/services/Api/appointment";
 import ActionModal from "@/components/ui/modals/ActionModal";
-
-export interface externalProductType {
-    id: string
-    name: string
-    imgUrl: string
-}
+import { externalProductType } from "@/types/productPresentation";
+import { usePresentationProductsContext } from "@/contexts/presentationProductsContext";
 
 export default function IndexScreen() {
+
     const {
         selectedAppointment,
-        handleRemoveSelectedAppointment
+        handleRemoveSelectedAppointment,
     } = useAppContext()
 
-    const { productId } = useGlobalSearchParams()
+    const { presentedProducts, isLoading: isProductsLoading } = usePresentationProductsContext()
+
+    // const { productId } = useGlobalSearchParams()
 
     const router = useRouter()
 
-    const [products, setProducts] = useState<externalProductType[]>([])
+    // const [presentationProducts, setPresentationProducts] = useState<externalProductType[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
     const [isAnnulerModalOpen, setIsAnnulerModalOpen] = useState(false)
@@ -73,14 +72,12 @@ export default function IndexScreen() {
                 setIsLoading(true)
 
                 let location = await handleGetUserLocation()
-                console.log("user location -> ", location);
-                
 
                 if (!location)
                     return
 
-                const products = await getUserProducts()
-                setProducts(products)
+                // const products = await getUserProducts()
+                // setPresentationProducts(products)
 
                 let appointment = await getAppointmentByVisiteId(selectedAppointment.id)
                 if (!appointment)
@@ -97,7 +94,7 @@ export default function IndexScreen() {
         }
         if (selectedAppointment)
             initialize()
-    }, [selectedAppointment, productId])
+    }, [selectedAppointment/*, productId*/])
 
     if (!selectedAppointment)
         return <LoadingScreen />
@@ -169,9 +166,9 @@ export default function IndexScreen() {
                         ))}
                     </View> */}
                 </View>
-                {!isLoading ?
+                {!isLoading && !isProductsLoading ?
                     <ProductsList
-                        products={products}
+                        products={presentedProducts}
                     />
                     :
                     <LoadingScreen />

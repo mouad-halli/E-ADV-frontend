@@ -1,4 +1,4 @@
-import { productSlideType, productSlideDTO } from "./productSlide"
+import { productSlideType, productSlideDTO, externalProductSlide } from "./productSlide"
 
 export enum generalFeedbackEnum {
     None = 0,
@@ -16,4 +16,11 @@ export interface productPresentationType {
 export interface productPresentationDTO {
     productId: string // external
     productSlides?: productSlideDTO[]
+}
+
+export interface externalProductType {
+    id: string
+    name: string
+    imgUrl: string
+    // slides: externalProductSlide[]
 }

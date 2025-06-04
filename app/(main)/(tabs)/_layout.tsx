@@ -3,11 +3,13 @@ import AuthGuard from "@/components/AuthGuard";
 import Navbar from "@/components/Navbar";
 import { Tabs } from "expo-router";
 import { AppContextProvider } from '../../../contexts/appContext';
+import { PresentationProductsProvider } from "@/contexts/presentationProductsContext";
 
 export default function TabsLayout() {
     return (
         <AuthGuard>
             <AppContextProvider>
+            {/* <PresentationProductsProvider> */}
             <Tabs
                 tabBar={props => <Navbar {...props} />}
                 screenOptions={{ headerShown: false }}
@@ -31,6 +33,7 @@ export default function TabsLayout() {
                     }}
                 />
             </Tabs>
+            {/* </PresentationProductsProvider> */}
             </AppContextProvider>
         </AuthGuard>
     )

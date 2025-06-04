@@ -55,7 +55,7 @@ export default function IndexScreen() {
                     >
                         En savoir plus sur les avantages de notre plateforme
                     </Text>
-                    <Text className="text-blue-900 font-bold text-4xl">Pourquoi notre plateforme est leader ?</Text>
+                    <Text className="text-blue-900 font-bold text-4xl">Pourquoi choisir E-ADV ?</Text>
                     <View className="flex-row justify-between">
                         <View className="w-[27rem] flex-row items-center gap-x-3 bg-[#a2aee2] rounded-3xl p-3">
                             <View className="bg-white rounded-full size-12  justify-center">

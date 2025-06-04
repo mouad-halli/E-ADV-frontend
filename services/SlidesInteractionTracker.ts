@@ -13,12 +13,16 @@ export const SlidesInteractionTracker = {
     //Save a feedback interaction to the local storage
     async saveProductSlideToStorage(productSlide: productSlideType): Promise<void> {
         try {
-            console.log('saving slide to storage...', productSlide.id)
+            // console.log('saving slide to storage...', productSlide.id)
 
             const storedData = await AsyncStorage.getItem(INTERACTIONS_KEY)
             const storedSlides: productSlideType[] = storedData ? JSON.parse(storedData) : []
-
-            storedSlides.push(productSlide)
+            const idx = storedSlides.findIndex(slide => slide.id === productSlide.id)
+            
+            if (idx !== -1)
+                storedSlides[idx] = productSlide
+            else
+                storedSlides.push(productSlide)
             await AsyncStorage.setItem(INTERACTIONS_KEY, JSON.stringify(storedSlides))
         } catch (error) {
             console.error('Error saving interaction:', error)
@@ -71,7 +75,7 @@ export const SlidesInteractionTracker = {
         if (syncIntervalId)
             return
 
-        console.log('Starting sync every', INTERACTIONS_SYNC_INTERVAL / 1000, 'seconds.')
+        // console.log('Starting sync every', INTERACTIONS_SYNC_INTERVAL / 1000, 'seconds.')
 
         syncIntervalId = setInterval(() => {
             this.syncInteractions()
@@ -81,7 +85,7 @@ export const SlidesInteractionTracker = {
     //Stop the background sync process
     stopSyncing(): void {
 
-        console.log('stopping sync')
+        // console.log('stopping sync')
         
         if (!syncIntervalId)
             return
@@ -98,12 +102,12 @@ export const SlidesInteractionTracker = {
     listenForAppStateChanges(): void {
         AppState.addEventListener('change', (nextAppState) => {
             if (nextAppState === 'background' || nextAppState === 'inactive') {
-                console.log('app going to background, syncing interactions...')
+                // console.log('app going to background, syncing interactions...')
                 this.syncInteractions()
                 this.stopSyncing()
             }
             else if (nextAppState === "active"){
-                console.log("app back again")
+                // console.log("app back again")
                 this.startSyncing()
             }
         })
@@ -112,7 +116,7 @@ export const SlidesInteractionTracker = {
     listenForNetworkStateChange(): void {
         NetInfo.addEventListener((state) => {
             if (state.isConnected) {
-                console.log('Network reconnected, syncing interactions...')
+                // console.log('Network reconnected, syncing interactions...')
                 this.syncInteractions()
             }
         })
