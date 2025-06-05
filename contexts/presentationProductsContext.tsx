@@ -7,6 +7,7 @@ import { useAppContext } from "./appContext"
 type presentationProductsContextType = {
     presentedProducts: presentedProductType[]
     isLoading: boolean
+    updateProductPresentationData: (productId: string, feedback: number, latestPresentationDate: string, presentationStatus: ProductPresentationStatus) => void
 }
 
 const presentationProductsContext = createContext<presentationProductsContextType>({} as presentationProductsContextType)
@@ -15,10 +16,16 @@ export const usePresentationProductsContext = () => useContext(presentationProdu
 
 type presentationProductsProviderProps = { children: ReactNode }
 
+export enum ProductPresentationStatus {
+    NOT_PRESENTED = "not-presented",
+    PRESENTED = "presented",
+    CONTINUE = "continue"
+}
+
 interface presentedProductDataType {
     latestPresentationDate: string
     feedback: number,
-    presentationStatus: "not-presented" | "presented" | "continue"
+    presentationStatus: ProductPresentationStatus
 }
 
 export interface presentedProductType extends presentedProductDataType {
@@ -33,11 +40,36 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
     const [presentedProducts, setPresentedProducts] = useState<presentedProductType[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+    const updateProductPresentationData = (
+        productId: string,
+        feedback: number,
+        latestPresentationDate: string,
+        presentationStatus: ProductPresentationStatus
+    ) => {
+        // setPresentedProducts(prevState => [
+        //     ...prevState.map(item => item.id === productId
+        //     ? {...item, feedback, presentationStatus, latestPresentationDate}
+        //     : item
+        // )])
+        setPresentedProducts(prevState => [
+            
+            ...prevState.map(item => {
+                if (item.id === productId) {
+                    return {...item, feedback, presentationStatus, latestPresentationDate}
+                }
+                else
+                    return item
+            }
+        )])
+    }
+
     useEffect(() => {
         const fetchPresentationProducts = async () => {
 
             try {
                 setIsLoading(true)
+                if (presentedProducts)
+                    setPresentedProducts([])
                 const selectedDoctorId = getSelectedDoctor()?.id
                 const products = await getUserProducts()
 
@@ -46,6 +78,7 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
 
                         const data: presentedProductDataType = (await $api.get("productPresentation/summary", { params: { doctorId: (selectedDoctorId), productId: product.id } })).data
                         const presentedProduct: presentedProductType = {...product, ...data}
+                    
                         setPresentedProducts(prevState => [...prevState, presentedProduct])
 
                     } catch (error: any) {
@@ -61,15 +94,17 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
             }
 
         }
-        fetchPresentationProducts()
-    }, [])
+        if (getSelectedDoctor()?.id)
+            fetchPresentationProducts()
+    }, [getSelectedDoctor()?.id])
 
     const value = useMemo(
         () => ({
             presentedProducts,
-            isLoading
+            isLoading,
+            updateProductPresentationData,
         })
-        , [presentedProducts, isLoading]
+        , [presentedProducts, isLoading, getSelectedDoctor()?.id]
     )
 
     return (

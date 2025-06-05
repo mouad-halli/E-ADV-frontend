@@ -1,0 +1,16 @@
+{
+    "header": "E-ADV, la solution digitale des visites médicales.",
+    "small-header": "Suivez les retours des médecins, et gagnez en efficacité sur le terrain.",
+    "login-form": {
+        "header": "Bienvenue!",
+        "small-header": "Veuillez entrer vos coordonnées",
+        "input1-title": "Nom d'utilisateur ou email",
+        "input1-placeholder": "nom d'utilisateur ou emai",
+        "input2-title": "Mot de passe",
+        "input2-placeholder": "mot de passe",
+        "forgot-password-small-title": "Mot de passe oublié ?",
+        "login-button-title": "Se connecter",
+        "microsoft-login-button-title": "Connectez-vous avec Microsoft",
+        "create-account-small-title": "Vous n'avez pas de compte ? Inscrivez-vous"
+    }
+}

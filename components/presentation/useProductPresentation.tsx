@@ -6,6 +6,8 @@ import { productPresentationType, generalFeedbackEnum } from '@/types/productPre
 import { externalProductSlide, FeedbackTypeEnum } from '@/types/productSlide';
 import { getProductSlides } from '@/services/Api/ExternalAPI';
 import { addProductPresentation, getProductPresentation, updateProductPresentation } from '@/services/Api/productPresentation';
+import { calcAverageOfArray } from '@/utils/calculations';
+import { ProductPresentationStatus, usePresentationProductsContext } from '@/contexts/presentationProductsContext';
 
 export const useProductPresentation = () => {
 
@@ -15,6 +17,10 @@ export const useProductPresentation = () => {
         getSelectedAppointmentId,
         isAppointmentSelected,
     } = useAppContext()
+
+    const {
+        updateProductPresentationData
+    } = usePresentationProductsContext()
 
     const [isTheaterMode, setIsTheaterMode] = useState(true)
     const [isAnnulerModalOpen, setIsAnnulerModalOpen] = useState(false)
@@ -100,6 +106,7 @@ export const useProductPresentation = () => {
     }
 
     const handleCancelPresentation = () => {
+        updateLocalProductPresentationSummary()
         router.back()
     }
 
@@ -110,6 +117,7 @@ export const useProductPresentation = () => {
     const handleValidatePresentation = async (
     ) => {
         if (presentedProduct) {
+            updateLocalProductPresentationSummary()
             try {
                 await updateProductPresentation(presentedProduct.id, generalComment, generalFeedback)
                 
@@ -127,7 +135,17 @@ export const useProductPresentation = () => {
         const feedback = presentedProduct.productSlides.filter((slide) => slide.feedback)
             .map(slide => slide.feedback === 2 ? 2.5 : slide.feedback)
             
-        return feedback?.reduce((a, b) => a + b, 0) / feedback?.length
+        // return feedback.reduce((a, b) => a + b, 0) / feedback.length
+        return calcAverageOfArray(feedback)
+    }
+
+    const updateLocalProductPresentationSummary = () => {
+        const feedback = calculateSlidesFeedbackRating()
+        const lastPresentationDate = new Date().toLocaleDateString()
+        // TO BE UPDATED LATED: this is just for testing
+        const presentationStatus: ProductPresentationStatus = ProductPresentationStatus.CONTINUE
+
+        updateProductPresentationData(String(productId), feedback, lastPresentationDate, presentationStatus)
     }
 
     useEffect(() => {
@@ -172,6 +190,7 @@ export const useProductPresentation = () => {
         toggleValiderModal, handleCancelPresentation, handleSetFeedbackRating,
         handleValidatePresentation, presentedProduct, setIsTheaterMode,
         setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
-        isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent
+        isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent,
+        updateLocalProductPresentationSummary
     }
 }

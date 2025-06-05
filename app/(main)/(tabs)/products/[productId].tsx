@@ -20,7 +20,8 @@ const productPresentation = () => {
         toggleAnnulerModal, toggleValiderModal, handleCancelPresentation,
         handleSetFeedbackRating, handleValidatePresentation, presentedProduct,
         setIsTheaterMode, setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
-        isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent
+        isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent,
+        updateLocalProductPresentationSummary
     } = useProductPresentation()
 
     if ( isLoading || !presentedProduct )

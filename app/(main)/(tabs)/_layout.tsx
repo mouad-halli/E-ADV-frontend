@@ -9,7 +9,6 @@ export default function TabsLayout() {
     return (
         <AuthGuard>
             <AppContextProvider>
-            {/* <PresentationProductsProvider> */}
             <Tabs
                 tabBar={props => <Navbar {...props} />}
                 screenOptions={{ headerShown: false }}
@@ -33,7 +32,6 @@ export default function TabsLayout() {
                     }}
                 />
             </Tabs>
-            {/* </PresentationProductsProvider> */}
             </AppContextProvider>
         </AuthGuard>
     )

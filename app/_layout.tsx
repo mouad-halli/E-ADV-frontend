@@ -7,6 +7,7 @@ import { PaperProvider } from 'react-native-paper';
 import { useEffect } from "react";
 import colors from "@/styles/colors";
 // import * as Linking from 'expo-linking'
+import '@/services/localization/i18n';
 
 export default function RootLayout() {
     const [loaded, error] = useFonts({

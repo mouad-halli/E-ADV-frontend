@@ -9,6 +9,7 @@ import colors from '@/styles/colors';
 import LoadingScreen from '../LoadingScreen';
 import useLoginForm from './useLoginForm';
 import { router } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 const LoginForm = () => {
 
@@ -24,6 +25,8 @@ const LoginForm = () => {
         handleLoginButtonPress,
     } = useLoginForm()
 
+    const { t } = useTranslation('login')
+
     return (
         <View className='h-full w-[40%]'>
             {isLoading ?
@@ -36,28 +39,28 @@ const LoginForm = () => {
                         <Logo />
                     </Pressable>
                     <View className='items-center gap-y-2'>
-                        <Text style={[globalStyles.robotoMedium]} className=' text-5xl text-primary'>Bienvenue!</Text>
-                        <Text style={[globalStyles.robotoMedium]} className=' text-secondary'>Veuillez entrer vos coordonnées</Text>
+                        <Text style={[globalStyles.robotoMedium]} className=' text-5xl text-primary'>{t("login-form.header")}</Text>
+                        <Text style={[globalStyles.robotoMedium]} className=' text-secondary'>{t("login-form.small-header")}</Text>
                     </View>
                     <View className='w-9/12 gap-y-4'>
                         <View className='gap-y-2'>
-                            <Text style={[globalStyles.robotoMedium]} className='text-xl text-primary'>Nom d'utilisateur ou email</Text>
+                            <Text style={[globalStyles.robotoMedium]} className='text-xl text-primary'>{t("login-form.input1-title")}</Text>
                             <TextInput
                                 style={[globalStyles.roboto]}
                                 className='text-primary border-2 border-accent rounded-lg px-4 py-4'
-                                placeholder="nom d'utilisateur ou email"
+                                placeholder={t("login-form.input1-placeholder")}
                                 placeholderTextColor={colors.primary}
                                 numberOfLines={1}
                                 editable={!isLoading}
                             />
                         </View>
                         <View className='gap-y-2'>
-                            <Text style={[globalStyles.robotoMedium]} className='text-xl text-primary'>Mot de passe</Text>
+                            <Text style={[globalStyles.robotoMedium]} className='text-xl text-primary'>{t("login-form.input2-title")}</Text>
                             <View className='w-full h-min flex-row items-center border-2 border-accent rounded-lg'>
                               <TextInput
                                   style={[globalStyles.roboto]}
                                   className='w-11/12 text-primary px-4 py-4'
-                                  placeholder='Mot de passe'
+                                  placeholder={t("login-form.input2-placeholder")}
                                   placeholderTextColor={colors.primary}
                                   secureTextEntry={passwordVisibility}
                                   numberOfLines={1}
@@ -71,7 +74,7 @@ const LoginForm = () => {
                               style={[globalStyles.roboto]}
                               className=' text-xs text-right text-secondary'
                             >
-                                Mot de passe oublié ?
+                                {t("login-form.forgot-password-small-title")}
                             </Text>
                         </View>
                     </View>
@@ -85,7 +88,7 @@ const LoginForm = () => {
                                 style={[globalStyles.roboto]}
                                 className='text-xl text-white text-center'
                             >
-                                Se connecter
+                                {t("login-form.login-button-title")}
                             </Text>
                         </Pressable>
                         <Pressable
@@ -98,7 +101,7 @@ const LoginForm = () => {
                                 style={[globalStyles.roboto]}
                                 className='text-xl'
                             >
-                                Connectez-vous avec Microsoft
+                                {t("login-form.microsoft-login-button-title")}
                             </Text>
                         </Pressable>
                     </View>
@@ -106,7 +109,7 @@ const LoginForm = () => {
                         style={[globalStyles.roboto]}
                         className=' text-xs text-secondary'
                     >
-                        Vous n'avez pas de compte ? Inscrivez-vous
+                        {t("login-form.create-account-small-title")}
                     </Text>
                 </View>
             }
