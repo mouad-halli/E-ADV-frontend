@@ -9,14 +9,26 @@ i18n
 	.init({
 		fallbackLng: 'en',
 		lng: deviceLanguage,
-		ns: ['login', 'home', 'appointments', 'presentation'], // namspaces
+		ns: ['login', 'home', 'appointments', 'products', 'presentation', 'navbar', 'common'], // namspaces
 		defaultNS: 'home', // default namespace
 		resources: {
 			en: {
 				login: require('@/locales/en/login.json'),
+				home: require('@/locales/en/home.json'),
+				navbar: require('@/locales/en/navbar.json'),
+				appointments: require('@/locales/en/appointments.json'),
+				products: require('@/locales/en/products.json'),
+				presentation: require('@/locales/en/common.json'),
+				common: require('@/locales/en/presentation.json'),
 			},
 	    	fr: {
 	    		login: require('@/locales/fr/login.json'),
+	    		home: require('@/locales/fr/home.json'),
+				navbar: require('@/locales/fr/navbar.json'),
+				appointments: require('@/locales/fr/appointments.json'),
+				products: require('@/locales/fr/products.json'),
+				presentation: require('@/locales/fr/presentation.json'),
+				common: require('@/locales/en/common.json'),
 	    	},
 	},
 })

@@ -1,0 +1,18 @@
+{
+    "filters": {
+        "search-input-placeholder": "rechercher par nom",
+        "date-title": "Date",
+        "territory-title": "Territoire",
+        "not-visited.title": "non visité",
+        "apply-button-title": "appliquer"
+    },
+    "table": {
+        "name": "Nom",
+        "speciality": "Spécialité",
+        "contact": "Contact",
+        "city": "Ville",
+        "work-place": "lieu de travail",
+        "date": "date",
+        "visited": "Visité"
+    }
+}

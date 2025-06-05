@@ -10,8 +10,11 @@ import ListSelectorModal from '@/components/Appointments/ListSelectorModal';
 import { Checkbox } from 'react-native-paper';
 import useAppointments from '@/components/Appointments/useAppointments';
 import LoadingScreen from '@/components/LoadingScreen';
+import { useTranslation } from 'react-i18next';
 
 const Appointments = () => {
+
+    const { t } = useTranslation('appointments')
 
     const {
         searchText,
@@ -42,7 +45,7 @@ const Appointments = () => {
                     <TextInput
                         style={styles.searchInputText}
                         className='w-11/12 placeholder:text-gray-500 placeholder:text-sm pl-4 py-1.5'
-                        placeholder='search'
+                        placeholder={t("filters.search-input-placeholder")}
                         numberOfLines={1}
                         onChangeText={setSearchText}
                         returnKeyType="done"
@@ -58,7 +61,7 @@ const Appointments = () => {
                     >
                         <CalendarIcon />
                         <View className=''>
-                            <Text style={styles.CallendarButtonTextTop}>Date</Text>
+                            <Text style={styles.CallendarButtonTextTop}>{t("filters.date-title")}</Text>
                             <Text style={styles.CallendarButtonTextBottom}>{
                                 selectedDateRange.startDate && selectedDateRange.endDate ?
                                 `${selectedDateRange.startDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })} / ${selectedDateRange.endDate?.toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}`
@@ -74,13 +77,13 @@ const Appointments = () => {
                     >
                         <LocationIcon />
                         <View className=''>
-                            <Text style={styles.CallendarButtonTextTop}>Territoire</Text>
+                            <Text style={styles.CallendarButtonTextTop}>{t("filters.territory-title")}</Text>
                             <Text style={styles.CallendarButtonTextBottom}>{selectedLocation ?? "aucun"}</Text>
                         </View>
                     </TouchableOpacity>
                     <View style={{ width: 1, height: '80%', backgroundColor: colors.secondary }} className=' self-center'></View>
                     <View className='flex-row items-center'>
-                        <Text style={styles.CallendarButtonTextBottom} >non visité</Text>
+                        <Text style={styles.CallendarButtonTextBottom} >{t("filters.not-visited.title")}</Text>
                         <Checkbox
                             status={displayNotVisited ? "checked" : "unchecked"}
                             onPress={handleToggleDisplayNotVisited}
@@ -96,7 +99,7 @@ const Appointments = () => {
                         <Text
                             style={[globalStyles.robotoMedium, styles.ApplyFiltersButtonText]}
                         >
-                            appliquer
+                            {t("filters.apply-button-title")}
                         </Text>
                     </Pressable>
                 </View>

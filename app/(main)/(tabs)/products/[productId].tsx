@@ -11,8 +11,11 @@ import HideCommentsIcon from '@/components/ui/icons/HideCommentsIcon';
 import FeedbackRating from '@/components/presentation/SlidesPlayer/FeedbackRating';
 import { useProductPresentation } from '../../../../components/presentation/useProductPresentation';
 import Comments from '@/components/presentation/Comments';
+import { useTranslation } from 'react-i18next';
 
 const productPresentation = () => {
+
+    const { t } = useTranslation("presentation")
 
     const {
         isTheaterMode, isLoading, setGeneralComment, productSlides,
@@ -47,7 +50,7 @@ const productPresentation = () => {
                             {!isTheaterMode ?
                                 <>
                                     <Text style={[styles.TextLg, globalStyles.robotoBold]}>
-                                        Slides Feedback
+                                        {t("slides-feedback-title")}
                                     </Text>
                                     <HideCommentsIcon onPress={() => setIsTheaterMode(true)} />
                                 </>
@@ -63,27 +66,33 @@ const productPresentation = () => {
                         {!isTheaterMode && <Comments productSlides={presentedProduct.productSlides} /> }
                     </View>
                     <View className={`h-1/6 ${isTheaterMode ? 'gap-y-2 items-center' : 'flex-row p-4 items-end'} justify-center gap-x-2`}>
-                        <AnnulerButton onPress={() => setIsAnnulerModalOpen(true)} minimal={isTheaterMode} />
+                        <AnnulerButton
+                            text={t("cancel-button-title")}
+                            onPress={() => setIsAnnulerModalOpen(true)} minimal={isTheaterMode}
+                        />
                         <ActionModal
                             isModalOpen={isAnnulerModalOpen}
                             toggleModal={toggleAnnulerModal}
                             onCancelPress={() => setIsAnnulerModalOpen(false)}
                             onAcceptPress={handleCancelPresentation}
-                            cancelBtnText='Attendre'
-                            acceptBtnText='Annuler'
+                            cancelBtnText={t("cancel-modal-accept-button-title")}
+                            acceptBtnText={t("cancel-modal-cancel-button-title")}
                             displayBtnsLogo={false}
-                            title='Annuler la Presentation ?'
-                            description="Êtes-vous sûr de vouloir annuler cette présentation ? Cette action est irréversible."
+                            title={t("cancel-modal-title")}
+                            description={t("cancel-modal-description")}
                         />
-                        <ValiderButton onPress={() => setIsValiderModalOpen(true)} minimal={isTheaterMode} />
+                        <ValiderButton
+                            text={t("validate-button-title")}
+                            onPress={() => setIsValiderModalOpen(true)} minimal={isTheaterMode}
+                        />
                         <ActionModal
                             isModalOpen={isValiderModalOpen}
                             toggleModal={toggleValiderModal}
                             onCancelPress={() => setIsValiderModalOpen(false)}
                             onAcceptPress={handleValidatePresentation}
-                            cancelBtnText='Attendre'
-                            title='Feedback General'
-                            description="Veuillez écrire un commentaire général et choisir un emoji pour décrire un feedback général"
+                            cancelBtnText={t("validate-modal-accept-button-title")}
+                            title={t("validate-modal-title")}
+                            description={t("validate-modal-description")}
                         >
                             <FeedbackRating
                                 feedbackRating={generalFeedback}

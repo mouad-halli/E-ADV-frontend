@@ -1,0 +1,18 @@
+{
+    "header": "informations sur le médecin",
+    "name": "Nom",
+    "speciality": "Spécialité",
+    "contact": "Contact",
+    "city": "Ville",
+    "work-place": "lieu de travail",
+    "cancel-button-title": "Annuler",
+    "cancel-modal-accept-button-title": "Attendre",
+    "cancel-modal-cancel-button-title": "Valider",
+    "cancel-modal-title": "Annuler la Presentation ?",
+    "cancel-modal-description": "Êtes-vous sûr de vouloir annuler cette présentation ? Cette action est irréversible.",
+    "validate-button-title": "Valider",
+    "validate-modal-accept-button-title": "Attendre",
+    "validate-modal-cancel-button-title": "Annuler",
+    "validate-modal-title": "Valider la Presentation ?",
+    "validate-modal-description": "Êtes-vous sûr de vouloir Valider cette présentation ?"
+}

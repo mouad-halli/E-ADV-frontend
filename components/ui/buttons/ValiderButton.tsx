@@ -16,6 +16,7 @@ const ValiderButton: FC<PropTypes> = ({
     text = "Valider",
     displayLogo = true
 }) => {
+
   return (
     <Pressable
         className={`flex-row gap-x-2 items-center bg-blue-900 border-2 border-primary ${minimal ? 'p-2 rounded' : 'flex-row gap-x-2 items-center px-8 py-2 rounded'}`}

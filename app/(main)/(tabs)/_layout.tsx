@@ -3,9 +3,12 @@ import AuthGuard from "@/components/AuthGuard";
 import Navbar from "@/components/Navbar";
 import { Tabs } from "expo-router";
 import { AppContextProvider } from '../../../contexts/appContext';
-import { PresentationProductsProvider } from "@/contexts/presentationProductsContext";
+import { useTranslation } from "react-i18next";
 
 export default function TabsLayout() {
+
+    const { t } = useTranslation('navbar')
+
     return (
         <AuthGuard>
             <AppContextProvider>
@@ -22,13 +25,13 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="Appointments"
                     options={{
-                        title: "Liste des médecins",
+                        title: t("tab1"),
                     }}
                 />
                 <Tabs.Screen
                     name="products"
                     options={{
-                        title: "Liste des produits",
+                        title: t("tab2"),
                     }}
                 />
             </Tabs>

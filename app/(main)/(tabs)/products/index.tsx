@@ -8,14 +8,15 @@ import { useEffect, useState } from "react";
 import * as Location from 'expo-location';
 import LoadingScreen from "@/components/LoadingScreen";
 import { useAppContext } from "@/contexts/appContext";
-import { useGlobalSearchParams, useRouter } from "expo-router";
-import { getUserProducts } from '@/services/Api/ExternalAPI';
+import { useRouter } from "expo-router";
 import { AddAppointment, getAppointmentByVisiteId } from "@/services/Api/appointment";
 import ActionModal from "@/components/ui/modals/ActionModal";
-import { externalProductType } from "@/types/productPresentation";
 import { usePresentationProductsContext } from "@/contexts/presentationProductsContext";
+import { useTranslation } from "react-i18next";
 
 export default function IndexScreen() {
+
+    const { t } = useTranslation('products')
 
     const {
         selectedAppointment,
@@ -104,10 +105,10 @@ export default function IndexScreen() {
         <SafeAreaView className=" pt-28 px-8 h-full flex">  
                 <View className="flex-1 gap-y-4 py-5">
                     <View style={{ maxWidth: "70%", width: "100%" }} className=" mx-auto bg-accent p-4 rounded-xl">
-                    <Text style={[Styles.textLg]}>informations sur le médecin :</Text>
+                    <Text style={[Styles.textLg]}>{t("header")} :</Text>
                     <View className="flex-row justify-around">
                         <View className="gap-y-1 my-3">
-                            <Text style={[Styles.textLg, { fontSize: 16 }]}>nom</Text>
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>{t("name")}</Text>
                             <Text
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
@@ -116,7 +117,7 @@ export default function IndexScreen() {
                             </Text>
                         </View>
                         <View className="gap-y-1 my-3">
-                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Spécialité</Text>
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>{t("speciality")}</Text>
                             <Text
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
@@ -125,7 +126,7 @@ export default function IndexScreen() {
                             </Text>
                         </View>
                         <View className="gap-y-1 my-3">
-                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Contact</Text>
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>{t("contact")}</Text>
                             <Text
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
@@ -134,7 +135,7 @@ export default function IndexScreen() {
                             </Text>
                         </View>
                         <View className="gap-y-1 my-3">
-                            <Text style={[Styles.textLg, { fontSize: 16 }]}>Ville</Text>
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>{t("city")}</Text>
                             <Text
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
@@ -143,7 +144,7 @@ export default function IndexScreen() {
                             </Text>
                         </View>
                         <View className="gap-y-1 my-3">
-                            <Text style={[Styles.textLg, { fontSize: 16 }]}>lieu de travail</Text>
+                            <Text style={[Styles.textLg, { fontSize: 16 }]}>{t("work-place")}</Text>
                             <Text
                                 numberOfLines={1}
                                 ellipsizeMode="tail"
@@ -174,29 +175,35 @@ export default function IndexScreen() {
                     <LoadingScreen />
                 }
                 <View className="flex-row justify-center gap-x-2 mt-auto">
-                    <AnnulerButton onPress={() => setIsAnnulerModalOpen(!isAnnulerModalOpen)} />
+                    <AnnulerButton
+                        text={t("cancel-button-title")}
+                        onPress={() => setIsAnnulerModalOpen(!isAnnulerModalOpen)}
+                    />
                     <ActionModal
                             isModalOpen={isAnnulerModalOpen}
                             toggleModal={() => setIsAnnulerModalOpen(!isAnnulerModalOpen)}
                             onCancelPress={() => setIsAnnulerModalOpen(false)}
                             onAcceptPress={handleAnnulerButtonClick}
-                            cancelBtnText='Attendre'
-                            acceptBtnText='Annuler'
+                            cancelBtnText={t("cancel-modal-accept-button-title")}
+                            acceptBtnText={t("cancel-modal-cancel-button-title")}
                             displayBtnsLogo={false}
-                            title='Annuler la Presentation ?'
-                            description="Êtes-vous sûr de vouloir annuler cette présentation ? Cette action est irréversible."
+                            title={t("cancel-modal-title")}
+                            description={t("cancel-modal-description")}
                     />
-                    <ValiderButton onPress={() => setIsValiderModalOpen(!isValiderModalOpen)} />
+                    <ValiderButton
+                        text={t("validate-button-title")}
+                        onPress={() => setIsValiderModalOpen(!isValiderModalOpen)}
+                    />
                     <ActionModal
                             isModalOpen={isValiderModalOpen}
                             toggleModal={() => setIsValiderModalOpen(!isValiderModalOpen)}
                             onCancelPress={() => setIsValiderModalOpen(false)}
                             onAcceptPress={handleValiderButtonClick}
-                            cancelBtnText='Attendre'
-                            acceptBtnText='Valider'
+                            cancelBtnText={t("validate-modal-accept-button-title")}
+                            acceptBtnText={t("validate-modal-cancel-button-title")}
                             displayBtnsLogo={false}
-                            title='Valider la Presentation ?'
-                            description="Êtes-vous sûr de vouloir Valider cette présentation ?"
+                            title={t("validate-modal-title")}
+                            description={t("validate-modal-description")}
                     />
                 </View>
             </View>

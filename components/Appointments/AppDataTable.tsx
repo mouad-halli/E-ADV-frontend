@@ -7,6 +7,7 @@ import useDataTable from './useDataTable';
 import LoadingScreen from '../LoadingScreen';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
 import { appointment } from './useAppointments';
+import { useTranslation } from 'react-i18next';
 
 interface PropTypes {
     appointmentsList: appointment[]
@@ -20,6 +21,9 @@ const AppDataTable = ({
     searchText,
     displayNotVisited
 }: PropTypes) => {
+
+    const { t } = useTranslation('appointments')
+
     const {
         page,
         from,
@@ -33,13 +37,13 @@ const AppDataTable = ({
     return (
         <DataTable>
             <DataTable.Header style={[styles.header, styles.row]}>
-                <DataTable.Title textStyle={styles.title} >Nom</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Spécialité</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Contact</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Ville</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >lieu de travail</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Date</DataTable.Title>
-                <DataTable.Title textStyle={styles.title} >Visité</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.name")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.speciality")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.contact")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.city")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.work-place")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.date")}</DataTable.Title>
+                <DataTable.Title textStyle={styles.title} >{t("table.visited")}</DataTable.Title>
             </DataTable.Header> 
             {Array.isArray(filteredAppointmentsList) && filteredAppointmentsList.slice(from, to).map((appointment) => (
                 <DataTable.Row onPress={() => handleRowPres(appointment)} style={[appointment.isVisited ? styles.visitedAppointmentRow : styles.row]} key={appointment.id}>

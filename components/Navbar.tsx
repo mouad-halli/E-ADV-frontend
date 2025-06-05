@@ -14,6 +14,7 @@ import { useGlobalSearchParams } from "expo-router"
 import { router } from "expo-router"
 
 export default function Navbar({ state, descriptors, navigation }: BottomTabBarProps) {
+
     const { buildHref } = useLinkBuilder()
     const { user, handleLogout } = useUserContext()
     const { isAppointmentSelected } = useAppContext()

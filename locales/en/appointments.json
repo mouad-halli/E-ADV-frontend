@@ -1,0 +1,18 @@
+{
+    "filters": {
+        "search-input-placeholder": "",
+        "date-title": "",
+        "territory-title": "",
+        "not-visited.title": "",
+        "apply-button-title": "r"
+    },
+    "table": {
+        "name": "",
+        "speciality": "",
+        "contact": "",
+        "city": "",
+        "work-place": "",
+        "date": "",
+        "visited": "é"
+    }
+}

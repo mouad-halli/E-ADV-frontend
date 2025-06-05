@@ -1,0 +1,20 @@
+{
+    "small-title1": "Fonctionnalité de la plateforme",
+    "header1": "Présentez mieux, engagez plus. Des outils interactifs pensés pour les professionnels du secteur pharmaceutique.",
+    "paragraph": "E-ADV transforme vos rendez-vous médicaux en expériences engageantes. Grâce à une interface intuitive et des outils de suivi avancés, vous maîtrisez chaque étape : du choix du produit à l’évaluation post-présentation.",
+    "call-to-action-button-title": "Lancer une présentation",
+    "small-title2": "En savoir plus sur les avantages de notre plateforme",
+    "header2": "Pourquoi choisir E-ADV ?",
+    "card1": {
+        "title": "Présentation intelligente",
+        "description": "Naviguez facilement entre vos slides, adaptez votre discours en direct et gardez l’attention du praticien."
+    },
+    "card2": {
+        "title": "Retours exploitables",
+        "description": "Recueillez des feedbacks détaillés à chaque étape pour améliorer vos prochaines visites."
+    },
+    "card3": {
+        "title": "Gain de temps et de performance",
+        "description": "Conçue pour vous faire gagner du temps, E-ADV automatise et facilite vos reportings."
+    }
+}
