@@ -6,6 +6,7 @@ import { isAppointmentVisited } from '@/services/Api/appointment'
 import $external_api from '@/services/Api/ExternalAPI'
 import { useFocusEffect } from 'expo-router'
 import { getWeekStartAndEnd } from '@/utils/dates'
+import appointmentsMockData from '@/locales/mockData/appointments.json'
 
 export interface appointment extends externalAppointmentType {
     isVisited: boolean
@@ -26,12 +27,6 @@ const useAppointments = (
     const [selectedDateRange, setSelectedDateRange] = useState(getWeekStartAndEnd(new Date()))
     const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined)
     const [displayNotVisited, setDisplayNotVisited] = useState<boolean>(false)
-    // const [filters, setFilters] = useState<Filters>({
-    //     selectedDateRange: getWeekStartAndEnd(new Date()),
-    //     selectedLocation: undefined,
-    //     notVisited: false
-    // })
-    // const [page, setPage] = useState<number>(0)
     const [appointmentsList, setAppointmentsList] = useState<appointment[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
@@ -77,7 +72,9 @@ const useAppointments = (
             key: "82082af0"
         }
         try {
-            const appointments: externalAppointmentType[] = (await $external_api.get(`/appointments`, {params})).data
+            // TO BE REMOVED LATER: mocking data
+            // const appointments: externalAppointmentType[] = (await $external_api.get(`/appointments`, {params})).data
+            const appointments: externalAppointmentType[] = appointmentsMockData
             if (!Array.isArray(appointments))
                 return
             const result: appointment[] = []

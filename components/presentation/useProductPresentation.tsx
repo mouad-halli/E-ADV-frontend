@@ -8,6 +8,7 @@ import { getProductSlides } from '@/services/Api/ExternalAPI';
 import { addProductPresentation, getProductPresentation, updateProductPresentation } from '@/services/Api/productPresentation';
 import { calcAverageOfArray } from '@/utils/calculations';
 import { ProductPresentationStatus, usePresentationProductsContext } from '@/contexts/presentationProductsContext';
+import productSlidesMockData from '@/locales/mockData/productSlides.json'
 
 export const useProductPresentation = () => {
 
@@ -155,7 +156,9 @@ export const useProductPresentation = () => {
                     setIsLoading(true)
                     const selectedAppointmentId = getSelectedAppointmentId()
 
-                    const slides: externalProductSlide[] = await getProductSlides(String(productId))
+                    //TO BE REMOVED LATER: mocking slides data
+                    // const slides: externalProductSlide[] = await getProductSlides(String(productId))
+                    const slides: externalProductSlide[] = productSlidesMockData
                     
                     let productPresentation: productPresentationType = await getProductPresentation(selectedAppointmentId, String(productId))
                     if (!productPresentation) {
@@ -183,7 +186,6 @@ export const useProductPresentation = () => {
         }
     }, [productId])
 
-
     return {
         isTheaterMode, isLoading, setGeneralComment, productSlides,
         handleSetSlideComment, handleSetSlideFeedback, toggleAnnulerModal,
@@ -191,6 +193,5 @@ export const useProductPresentation = () => {
         handleValidatePresentation, presentedProduct, setIsTheaterMode,
         setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
         isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent,
-        updateLocalProductPresentationSummary
     }
 }

@@ -199,8 +199,8 @@ export default function IndexScreen() {
                             toggleModal={() => setIsValiderModalOpen(!isValiderModalOpen)}
                             onCancelPress={() => setIsValiderModalOpen(false)}
                             onAcceptPress={handleValiderButtonClick}
-                            cancelBtnText={t("validate-modal-accept-button-title")}
-                            acceptBtnText={t("validate-modal-cancel-button-title")}
+                            cancelBtnText={t("validate-modal-cancel-button-title")}
+                            acceptBtnText={t("validate-modal-accept-button-title")}
                             displayBtnsLogo={false}
                             title={t("validate-modal-title")}
                             description={t("validate-modal-description")}

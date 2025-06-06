@@ -28,7 +28,7 @@ i18n
 				appointments: require('@/locales/fr/appointments.json'),
 				products: require('@/locales/fr/products.json'),
 				presentation: require('@/locales/fr/presentation.json'),
-				common: require('@/locales/en/common.json'),
+				common: require('@/locales/fr/common.json'),
 	    	},
 	},
 })

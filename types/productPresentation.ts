@@ -11,6 +11,7 @@ export interface productPresentationType {
     id: string
     productId: string // external
     productSlides: productSlideType[]
+    createdAt: string
 }
 
 export interface productPresentationDTO {

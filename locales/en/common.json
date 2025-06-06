@@ -1,6 +1,7 @@
 {
     "buttons": {
-        "cancel-button": "",
-        "validate-button": ""
+        "cancel-button": "Cancel",
+        "validate-button": "Validate",
+        "loading": "loading"
     }
 }

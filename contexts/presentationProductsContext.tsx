@@ -3,6 +3,7 @@ import { getUserProducts } from "@/services/Api/ExternalAPI"
 import { externalProductType, productPresentationType } from "@/types/productPresentation"
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from "react"
 import { useAppContext } from "./appContext"
+import productsMockData from '@/locales/mockData/products.json'
 
 type presentationProductsContextType = {
     presentedProducts: presentedProductType[]
@@ -19,7 +20,8 @@ type presentationProductsProviderProps = { children: ReactNode }
 export enum ProductPresentationStatus {
     NOT_PRESENTED = "not-presented",
     PRESENTED = "presented",
-    CONTINUE = "continue"
+    CONTINUE = "continue",
+    REPLAY = "replay"
 }
 
 interface presentedProductDataType {
@@ -51,10 +53,11 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
         //     ? {...item, feedback, presentationStatus, latestPresentationDate}
         //     : item
         // )])
+        
         setPresentedProducts(prevState => [
             
             ...prevState.map(item => {
-                if (item.id === productId) {
+                if (String(item.id) === String(productId)) {
                     return {...item, feedback, presentationStatus, latestPresentationDate}
                 }
                 else
@@ -71,12 +74,16 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
                 if (presentedProducts)
                     setPresentedProducts([])
                 const selectedDoctorId = getSelectedDoctor()?.id
-                const products = await getUserProducts()
 
-                await Promise.all(products.map(async (product) => {
+                //TO BE REMOVED LATER: mocking products data
+                // const products: externalProductType[] = await getUserProducts()
+                const products: any = productsMockData
+
+                await Promise.all(products.map(async (product: externalProductType) => {
                     try {
 
                         const data: presentedProductDataType = (await $api.get("productPresentation/summary", { params: { doctorId: (selectedDoctorId), productId: product.id } })).data
+                        
                         const presentedProduct: presentedProductType = {...product, ...data}
                     
                         setPresentedProducts(prevState => [...prevState, presentedProduct])

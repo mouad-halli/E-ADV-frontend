@@ -24,7 +24,6 @@ const productPresentation = () => {
         handleSetFeedbackRating, handleValidatePresentation, presentedProduct,
         setIsTheaterMode, setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
         isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent,
-        updateLocalProductPresentationSummary
     } = useProductPresentation()
 
     if ( isLoading || !presentedProduct )

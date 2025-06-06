@@ -1,0 +1,26 @@
+[{
+  "id": "9b7eb2c5-3776-450b-b80a-c723eac90b08",
+  "type": "M",
+  "slideUrl": "http://dummyimage.com/108x100.png/dddddd/000000",
+  "orderNumber": 1
+}, {
+  "id": "7954e470-e357-428c-8f9f-87d94f36311e",
+  "type": "M",
+  "slideUrl": "http://dummyimage.com/232x100.png/ff4444/ffffff",
+  "orderNumber": 2
+}, {
+  "id": "9024eb10-e169-4dec-9d6f-3ab99fa02aac",
+  "type": "F",
+  "slideUrl": "http://dummyimage.com/129x100.png/dddddd/000000",
+  "orderNumber": 3
+}, {
+  "id": "a4fc9d9d-eb48-4f36-b50c-8a241d7eebb0",
+  "type": "M",
+  "slideUrl": "http://dummyimage.com/159x100.png/ff4444/ffffff",
+  "orderNumber": 4
+}, {
+  "id": "7b70a5ab-f191-46f4-af79-a1ed9c432a38",
+  "type": "F",
+  "slideUrl": "http://dummyimage.com/128x100.png/5fa2dd/ffffff",
+  "orderNumber": 5
+}]

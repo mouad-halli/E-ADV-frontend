@@ -81,25 +81,28 @@ const ProductsItem = ({ product/*, startProductPresentation*/ }: PropTypes) => {
                 >
                     <Checkmark />
                 </View>}
-                {product.presentationStatus === "continue" && <View 
+                {(product.presentationStatus === "continue" || product.presentationStatus === "replay") && <View 
                     style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }} 
                     className="absolute inset-0 p-4 justify-center items-center gap-2"
                 >
-                    <Pressable
-                        onPress={handlePress}
-                        className="items-center"
-                    >
-                        <PlayIcon />
-                        <Text style={[Styles.textLg, { color: colors.primary }]}>Continue</Text>
-                    </Pressable>
-                    <View style={{ height: 1.5, width: '80%'}} className=' bg-accent'></View>
-                    <Pressable
-                        onPress={handlePress}
-                        className=" items-center"
-                    >
-                        <ReplayIcon />
-                        <Text style={[Styles.textLg, { color: colors.primary }]}>Replay</Text>
-                    </Pressable>
+                    {product.presentationStatus === "continue" ?
+                        <Pressable
+                            onPress={handlePress}
+                            className="items-center"
+                        >
+                            <PlayIcon />
+                            <Text style={[Styles.textLg, { color: colors.primary }]}>Continue</Text>
+                        </Pressable>
+                        :
+                        <Pressable
+                            onPress={handlePress}
+                            className=" items-center"
+                        >
+                            <ReplayIcon />
+                            <Text style={[Styles.textLg, { color: colors.primary }]}>Replay</Text>
+                        </Pressable>
+                    }
+                    {/* <View style={{ height: 1.5, width: '80%'}} className=' bg-accent'></View> */}
                 </View>}
             </ImageBackground>
             <View className="flex-row justify-between">

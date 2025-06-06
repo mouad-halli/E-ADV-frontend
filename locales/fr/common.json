@@ -1,6 +1,7 @@
 {
     "buttons": {
         "cancel-button": "Annuler",
-        "validate-button": "Valider"
+        "validate-button": "Valider",
+        "loading": "chargement"
     }
 }

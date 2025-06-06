@@ -1,0 +1,41 @@
+[{
+  "id": 1,
+  "name": "Wireless Smart Plug",
+  "imgUrl": "http://dummyimage.com/215x100.png/dddddd/000000"
+}, {
+  "id": 2,
+  "name": "Cinnamon Roll Protein Bar",
+  "imgUrl": "http://dummyimage.com/177x100.png/cc0000/ffffff"
+}, {
+  "id": 3,
+  "name": "LED Strip Lights with Remote Control",
+  "imgUrl": "http://dummyimage.com/222x100.png/ff4444/ffffff"
+}, {
+  "id": 4,
+  "name": "Children's Art Set",
+  "imgUrl": "http://dummyimage.com/112x100.png/dddddd/000000"
+}, {
+  "id": 5,
+  "name": "Portable Speaker Stand",
+  "imgUrl": "http://dummyimage.com/176x100.png/dddddd/000000"
+}, {
+  "id": 6,
+  "name": "Frozen Chicken Nuggets",
+  "imgUrl": "http://dummyimage.com/195x100.png/dddddd/000000"
+}, {
+  "id": 7,
+  "name": "Watercolor Paint Set",
+  "imgUrl": "http://dummyimage.com/218x100.png/5fa2dd/ffffff"
+}, {
+  "id": 8,
+  "name": "Portable Massage Gun",
+  "imgUrl": "http://dummyimage.com/226x100.png/dddddd/000000"
+}, {
+  "id": 9,
+  "name": "Lasagna Noodles",
+  "imgUrl": "http://dummyimage.com/185x100.png/ff4444/ffffff"
+}, {
+  "id": 10,
+  "name": "Classic Pesto Sauce",
+  "imgUrl": "http://dummyimage.com/200x100.png/dddddd/000000"
+}]
