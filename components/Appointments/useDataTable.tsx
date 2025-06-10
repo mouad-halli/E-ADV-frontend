@@ -3,6 +3,7 @@ import { externalAppointmentType } from "@/types/appointment"
 import { useEffect, useState } from "react"
 import { useRouter } from "expo-router"
 import { appointment } from "./useAppointments"
+import { isToday } from "@/utils/dates"
 
 const useDataTable = (
     appointmentsList: appointment[],
@@ -17,6 +18,8 @@ const useDataTable = (
     const [filteredAppointmentsList, setFilteredAppointmentsList] = useState<appointment[]>([])
 
     const handleRowPres = (appointment: externalAppointmentType) => {
+        if (!isToday(new Date(appointment.appointmentDate)))
+            return
         handleSetSelectedAppointment(appointment)
         router.replace("/(main)/(tabs)/products")
     }

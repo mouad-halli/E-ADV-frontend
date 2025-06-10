@@ -18,7 +18,7 @@ export const SlidesInteractionTracker = {
             const storedData = await AsyncStorage.getItem(INTERACTIONS_KEY)
             const storedSlides: productSlideType[] = storedData ? JSON.parse(storedData) : []
             const idx = storedSlides.findIndex(slide => slide.id === productSlide.id)
-            
+            productSlide.updatedAt = new Date().toISOString()
             if (idx !== -1)
                 storedSlides[idx] = productSlide
             else
@@ -85,7 +85,7 @@ export const SlidesInteractionTracker = {
     //Stop the background sync process
     stopSyncing(): void {
 
-        // console.log('stopping sync')
+        console.log('stopping sync')
         
         if (!syncIntervalId)
             return

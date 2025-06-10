@@ -9,32 +9,31 @@ import colors from '@/styles/colors';
 import { externalProductSlide, FeedbackTypeEnum, productSlideType } from '@/types/productSlide';
 import useSlideTimeTracker from './useSlideTimeTracker';
 import { AntDesign } from '@expo/vector-icons';
+import { usePresentationContext } from '@/contexts/presentationContext';
 
 interface PropTypes {
-    slides: externalProductSlide[],
-    setSlideFeedback: (slideId: string, feedback: FeedbackTypeEnum) => void
-    setSlideComment: (slideId: string, comment: string) => void
-    setTimeSpent: (slideId: string, timeSpent: number) => void
-    presentedSlides: productSlideType[]
     isTheaterMode: boolean
 }
 
 const SlidesPlayer = ({
-    slides,
-    setSlideFeedback,
-    presentedSlides,
-    setSlideComment,
-    setTimeSpent,
-    isTheaterMode
+    isTheaterMode,
 }: PropTypes) => {
-    
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    const {
+        slideStartIndex,
+        productSlides: slides,
+        presentedProduct,
+        handleSetSlideTimeSpent: setTimeSpent,
+        handleSetSlideComment: setSlideComment,
+        handleSetSlideFeedback: setSlideFeedback,
+    } = usePresentationContext()
+
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(slideStartIndex)
     const [comment, setComment] = useState("")
     const [isPaused, setIsPaused] = useState(false)
     const {
         pauseTimer,
         resumeTimer
-    } = useSlideTimeTracker(currentSlideIndex, slides, presentedSlides, setTimeSpent)
+    } = useSlideTimeTracker(currentSlideIndex, slides, presentedProduct?.productSlides, setTimeSpent)
 
     const handleEnterPress = (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
         if (comment.trim() !== "") {

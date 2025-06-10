@@ -48,12 +48,12 @@ export const PresentationProductsProvider : FC<presentationProductsProviderProps
         latestPresentationDate: string,
         presentationStatus: ProductPresentationStatus
     ) => {
+
         // setPresentedProducts(prevState => [
         //     ...prevState.map(item => item.id === productId
         //     ? {...item, feedback, presentationStatus, latestPresentationDate}
         //     : item
         // )])
-        
         setPresentedProducts(prevState => [
             
             ...prevState.map(item => {

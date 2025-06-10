@@ -14,11 +14,13 @@ export const updateProductPresentation = async (
     })).data
 }
 
-export const getProductPresentation = async (appointmentId: string, productId: string): Promise<productPresentationType> => {
+export const getProductPresentation = async (appointmentId: string, productId: string)
+: Promise<{productPresentation: productPresentationType, slideIdToContinueFrom: string}> => {
     return (await $api.get(`/productPresentation`, { params: { visiteId: appointmentId, productId: productId } })).data
 }
 
-export const addProductPresentation = async (appointmentId: string, productId: string, slides: externalProductSlide[]) => {
+export const addProductPresentation = async (appointmentId: string, productId: string, slides: externalProductSlide[])
+: Promise<{productPresentation: productPresentationType, slideIdToContinueFrom: string}> => {
     const body: productPresentationDTO = {
         productId: String(productId),
         productSlides: slides.map(slide => ({

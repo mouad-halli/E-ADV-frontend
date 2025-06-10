@@ -13,14 +13,4 @@
   "type": "F",
   "slideUrl": "http://dummyimage.com/129x100.png/dddddd/000000",
   "orderNumber": 3
-}, {
-  "id": "a4fc9d9d-eb48-4f36-b50c-8a241d7eebb0",
-  "type": "M",
-  "slideUrl": "http://dummyimage.com/159x100.png/ff4444/ffffff",
-  "orderNumber": 4
-}, {
-  "id": "7b70a5ab-f191-46f4-af79-a1ed9c432a38",
-  "type": "F",
-  "slideUrl": "http://dummyimage.com/128x100.png/5fa2dd/ffffff",
-  "orderNumber": 5
 }]

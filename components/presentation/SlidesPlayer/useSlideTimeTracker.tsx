@@ -2,13 +2,15 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { AppState } from 'react-native';
 import { SlidesInteractionTracker } from '@/services/SlidesInteractionTracker';
 import { productSlideType } from '@/types/productSlide';
+import { usePresentationContext } from '@/contexts/presentationContext';
 
 const useSlideTimeTracker = (
     currentSlideIndex: number,
     slides: { id: string }[],
-    presentedSlides: productSlideType[],
+    presentedSlides: productSlideType[] | undefined,
     setTimeSpent: (slideId: string, timeSpent: number) => void
 ) => {
+    const { updateLocalProductPresentationSummary } = usePresentationContext()
     const startTimeRef = useRef<number | null>(null)
     const [isPaused, setIsPaused] = useState(false)
 
@@ -27,6 +29,7 @@ const useSlideTimeTracker = (
         return () => {
             // console.log("child clean up")
             stopTimer() // stop and set time spent on slide change
+            updateLocalProductPresentationSummary()
         }
     }, [currentSlideIndex])
 
@@ -45,11 +48,14 @@ const useSlideTimeTracker = (
 
             if (slideId) {
                 
-                const slide = presentedSlides.find(presentedSlide => String(presentedSlide.slideId) === String(slideId))
+                const slide = presentedSlides?.find(presentedSlide => String(presentedSlide.slideId) === String(slideId))
                 if (slide) {
-                    slide.timeSpent += timeSpent / 1000
-                    setTimeSpent(slideId, timeSpent / 1000)
-                    SlidesInteractionTracker.saveProductSlideToStorage(slide)
+                    const timeToSeconds = timeSpent / 1000
+                    if (timeToSeconds >= 3) {
+                        slide.timeSpent += timeToSeconds
+                        setTimeSpent(slideId, timeToSeconds)
+                        SlidesInteractionTracker.saveProductSlideToStorage(slide)
+                    }
                 }
             }
 

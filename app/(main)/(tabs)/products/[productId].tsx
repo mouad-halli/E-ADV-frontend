@@ -12,19 +12,22 @@ import FeedbackRating from '@/components/presentation/SlidesPlayer/FeedbackRatin
 import { useProductPresentation } from '../../../../components/presentation/useProductPresentation';
 import Comments from '@/components/presentation/Comments';
 import { useTranslation } from 'react-i18next';
+import { usePresentationContext } from '@/contexts/presentationContext';
 
 const productPresentation = () => {
 
     const { t } = useTranslation("presentation")
 
     const {
-        isTheaterMode, isLoading, setGeneralComment, productSlides,
-        handleSetSlideComment, handleSetSlideFeedback,
+        isTheaterMode, setGeneralComment,
         toggleAnnulerModal, toggleValiderModal, handleCancelPresentation,
-        handleSetFeedbackRating, handleValidatePresentation, presentedProduct,
+        handleSetFeedbackRating, handleValidatePresentation,
         setIsTheaterMode, setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
-        isValiderModalOpen, generalFeedback, generalComment, handleSetSlideTimeSpent,
+        isValiderModalOpen, generalFeedback, generalComment,
+        slideStartIndex,
     } = useProductPresentation()
+
+    const {presentedProduct, isLoading} = usePresentationContext()
 
     if ( isLoading || !presentedProduct )
         return <LoadingScreen />
@@ -35,12 +38,7 @@ const productPresentation = () => {
             <View className='flex-1 flex-row gap-x-8 pt-4'>
                 <View className={`h-full ${isTheaterMode ? 'flex-1' : 'w-[70%]'} gap-y-4`}>
                     <SlidesPlayer
-                        slides={productSlides}
-                        setSlideFeedback={handleSetSlideFeedback}
-                        setSlideComment={handleSetSlideComment}
-                        setTimeSpent={handleSetSlideTimeSpent}
                         isTheaterMode={isTheaterMode}
-                        presentedSlides={presentedProduct.productSlides}
                     />
                 </View>
                 <View className={`h-full ${isTheaterMode ? 'w-min': 'w-[28%]'}`}>
