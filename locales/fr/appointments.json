@@ -11,8 +11,8 @@
         "speciality": "Spécialité",
         "contact": "Contact",
         "city": "Ville",
-        "work-place": "lieu de travail",
-        "date": "date",
+        "work-place": "Lieu de travail",
+        "date": "Date",
         "visited": "Visité"
     }
 }

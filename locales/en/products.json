@@ -1,7 +1,18 @@
 {
-    "name": "Nom",
-    "speciality": "Spécialité",
+    "header": "Doctor information",
+    "name": "Name",
+    "speciality": "Speciality",
     "contact": "Contact",
-    "city": "Ville",
-    "work-place": "lieu de travail"
+    "city": "City",
+    "work-place": "Work place",
+    "cancel-button-title": "Cancel",
+    "cancel-modal-accept-button-title": "Wait",
+    "cancel-modal-cancel-button-title": "Validate",
+    "cancel-modal-title": "Cancel the presentation ?",
+    "cancel-modal-description": "Are you sure you want to cancel this presentation ? This action is irreversible.",
+    "validate-button-title": "Validate",
+    "validate-modal-accept-button-title": "Validate",
+    "validate-modal-cancel-button-title": "Wait",
+    "validate-modal-title": "Validate the presentation ?",
+    "validate-modal-description": "Are you sure you want to validate this presentation ?"
 }

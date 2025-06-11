@@ -1,5 +1,12 @@
-[{
-  "id": 1,
-  "name": "Wireless Smart Plug",
-  "imgUrl": "http://dummyimage.com/215x100.png/dddddd/000000"
-}]
+[
+  {
+    "id": 1,
+    "name": "Wireless Smart Plug",
+    "imgUrl": "http://dummyimage.com/215x100.png/dddddd/000000"
+  },
+  {
+    "id": "295ac9c0-93e7-43e4-a96d-1efa6c1cc590",
+    "name": "Creamy Spinach Dip",
+    "imgUrl": "http://dummyimage.com/197x100.png/ff4444/ffffff"
+  }
+]

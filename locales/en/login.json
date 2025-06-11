@@ -1,18 +1,16 @@
 {
-    "login-screen": {
-        "header": "",
-        "small-header": "",
-        "login-form": {
-            "header": "",
-            "small-header": "",
-            "input1-title": "",
-            "input1-placeholder": "",
-            "input2-title": "",
-            "input2-placeholder": "",
-            "login-button-title": "",
-            "login-microsoft-title": "",
-            "forgot-password-small-title": "",
-            "create-account-small-title": ""
-        }
+    "header": "E-ADV, the digital solution for medical visits.",
+    "small-header": "Deliver impactful product presentations, gather doctor feedback, and boost your effectiveness in the field.",
+    "login-form": {
+        "header": "Welcome!",
+        "small-header": "Please enter your credentials",
+        "input1-title": "Username or email",
+        "input1-placeholder": "username or email",
+        "input2-title": "Password",
+        "input2-placeholder": "password",
+        "forgot-password-small-title": "Forgot your password ?",
+        "login-button-title": "Login",
+        "microsoft-login-button-title": "Login with Microsoft",
+        "create-account-small-title": "You don't have an account ? Create one"
     }
 }

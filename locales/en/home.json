@@ -1,20 +1,20 @@
 {
-    "small-title1": "",
-    "header1": "",
-    "paragraph": "",
-    "call-to-action-button-title": "",
-    "small-title2": "",
-    "header2": "",
+    "small-title1": "Platform functionality",
+    "header1": "Present smarter, engage better. Interactive tools designed for pharmaceutical professionals.",
+    "paragraph": "E-ADV turns your medical appointments into engaging experiences. With an intuitive interface and advanced tools, you’re in control every step of the way—from product selection to post-presentation feedback.",
+    "call-to-action-button-title": "Start a presentation",
+    "small-title2": "Learn more about the benefits of our platform",
+    "header2": "Why choose E-ADV ?",
     "card1": {
-        "title": "",
-        "description": "."
+        "title": "Smart Presentations",
+        "description": "Seamlessly navigate your slides, adapt your discourse in real time, and keep the doctor's attention."
     },
     "card2": {
-        "title": "",
-        "description": "."
+        "title": "Actionable Feedback",
+        "description": "Collect detailed feedback at every stage to refine your future presentations."
     },
     "card3": {
-        "title": "",
-        "description": "."
+        "title": "Time-Saving & Performance-Driven",
+        "description": "E-ADV simplifies your reporting, so you can focus on results."
     }
 }

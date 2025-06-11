@@ -114,15 +114,20 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
     }
 
     const updateLocalProductPresentationSummary = () => {
-        const feedback = calculateSlidesFeedbackRating()
-        const lastPresentationDate = new Date().toLocaleDateString()
         let presentationStatus = ProductPresentationStatus.NOT_PRESENTED
 
         if (presentedProduct?.productSlides.every(slide => slide.timeSpent >= 3 || slide.timeSpent === -1))
             presentationStatus = ProductPresentationStatus.PRESENTED
         else if (presentedProduct?.productSlides.some(slide => slide.timeSpent >= 3 || slide.timeSpent === -1))
             presentationStatus = ProductPresentationStatus.CONTINUE
-        updateProductPresentationData(String(productId), feedback, lastPresentationDate, presentationStatus)
+
+        if (presentationStatus !== ProductPresentationStatus.NOT_PRESENTED)
+            updateProductPresentationData(
+                String(productId),
+                calculateSlidesFeedbackRating(),
+                new Date().toLocaleDateString(),
+                presentationStatus
+            )
     }
 
     useEffect(() => {

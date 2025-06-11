@@ -7,7 +7,7 @@ export const deviceLanguage = getLocales()?.[0]?.languageCode ?? "fr";
 i18n
 	.use(initReactI18next)
 	.init({
-		fallbackLng: 'en',
+		fallbackLng: 'fr',
 		lng: deviceLanguage,
 		ns: ['login', 'home', 'appointments', 'products', 'presentation', 'navbar', 'common'], // namspaces
 		defaultNS: 'home', // default namespace

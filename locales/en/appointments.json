@@ -1,18 +1,18 @@
 {
     "filters": {
-        "search-input-placeholder": "",
-        "date-title": "",
-        "territory-title": "",
-        "not-visited.title": "",
-        "apply-button-title": "r"
+        "search-input-placeholder": "search by name",
+        "date-title": "Date",
+        "territory-title": "Territory",
+        "not-visited.title": "not visited",
+        "apply-button-title": "apply"
     },
     "table": {
-        "name": "",
-        "speciality": "",
-        "contact": "",
-        "city": "",
-        "work-place": "",
-        "date": "",
-        "visited": "é"
+        "name": "Name",
+        "speciality": "Speciality",
+        "contact": "Contact",
+        "city": "City",
+        "work-place": "Work place",
+        "date": "Date",
+        "visited": "Visited"
     }
 }
