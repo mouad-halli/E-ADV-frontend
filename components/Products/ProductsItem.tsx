@@ -7,69 +7,31 @@ import ReplayIcon from "../ui/icons/ReplayIcon";
 import Checkmark from '../ui/icons/Checkmark';
 import { useEffect, useState } from "react";
 import { useAppContext } from "@/contexts/appContext";
-import { router, useGlobalSearchParams, useRouter } from "expo-router";
+import { router } from "expo-router";
 import $api from '@/services/Api/API';
 import LoadingScreen from "../LoadingScreen";
 import { externalProductType } from "@/types/productPresentation";
 import { presentedProductType } from "@/contexts/presentationProductsContext";
+import { usePresentationContext } from "@/contexts/presentationContext";
 
 interface PropTypes {
     product: presentedProductType
-    // startProductPresentation: (productId: string) => void
 }
 
-// interface presentedProductDataType {
-//     latestPresentationDate: string
-//     feedback: number,
-//     presentationStatus: "not-presented" | "presented" | "continue"
-// }
+const ProductsItem = ({ product }: PropTypes) => {
 
-const ProductsItem = ({ product/*, startProductPresentation*/ }: PropTypes) => {
-
-    // const { productId } = useGlobalSearchParams()
-    // const { getSelectedDoctor } = useAppContext()
-
-    // const [productPresentationData, setProductPresentationData] = useState<presentedProductDataType>()
-
-    // const [isLoading, setIsLoading] = useState(false)
+    const { handleSetSelectedProductId } = usePresentationContext()
 
     const handlePress = () => {
+        handleSetSelectedProductId(product.id)
         router.push({
             pathname: "/(main)/(tabs)/products/[productId]",
             params: { productId: product.id }
         })
     }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-            
-    //         try {
-    //             const selectedDoctorId = getSelectedDoctor()?.id
-    //             if (!selectedDoctorId) {
-    //                 setIsLoading(false)
-    //                 return
-    //             }
-    //             const data: presentedProductDataType = (await $api.get("productPresentation/summary", { params: { doctorId: (selectedDoctorId), productId: product.id } })).data
-    //             if (data)
-    //                 setProductPresentationData(data)
-    //             setIsLoading(false)
-    //         } catch (error: any) {
-    //             const errResponse = (error && error.response && error.response.data) || (error && error.message)
-
-    //             console.log(errResponse)
-    //             setIsLoading(false)
-    //         }
-    //     }
-    //     console.log("rerender")
-    //     fetchData()
-    // }, [productId])
-
-    // if (isLoading || !productPresentationData)
-    //     return <LoadingScreen />
-
     return (
         <Pressable
-            // onPress={() => startProductPresentation(product.id)}
             onPress={handlePress}
         >
             <ImageBackground 
@@ -102,7 +64,6 @@ const ProductsItem = ({ product/*, startProductPresentation*/ }: PropTypes) => {
                             <Text style={[Styles.textLg, { color: colors.primary }]}>Replay</Text>
                         </Pressable>
                     }
-                    {/* <View style={{ height: 1.5, width: '80%'}} className=' bg-accent'></View> */}
                 </View>}
             </ImageBackground>
             <View className="flex-row justify-between">

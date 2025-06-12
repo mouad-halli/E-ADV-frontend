@@ -2,12 +2,12 @@
     "slides-feedback-title": "Slides feedback",
     "cancel-button-title": "Cancel",
     "cancel-modal-accept-button-title": "Wait",
-    "cancel-modal-cancel-button-title": "Validate",
+    "cancel-modal-cancel-button-title": "Cancel",
     "cancel-modal-title": "Cancel presentation ?",
     "cancel-modal-description": "Are you sure you want to cancel this presentation ? This action is irreversible.",
     "validate-button-title": "Validate",
-    "validate-modal-accept-button-title": "Wait",
-    "validate-modal-cancel-button-title": "Cancel",
+    "validate-modal-accept-button-title": "Validate",
+    "validate-modal-cancel-button-title": "Wait",
     "validate-modal-title": "General feedback",
     "validate-modal-description": "Please write a general comment and choose an emoji to describe the general feedback."
 }

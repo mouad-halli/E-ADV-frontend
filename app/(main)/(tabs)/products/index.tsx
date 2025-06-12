@@ -23,15 +23,9 @@ export default function IndexScreen() {
         handleRemoveSelectedAppointment,
     } = useAppContext()
 
-    const { presentedProducts, isLoading: isProductsLoading } = usePresentationProductsContext()
-
-    // const { productId } = useGlobalSearchParams()
-
     const router = useRouter()
-
-    // const [presentationProducts, setPresentationProducts] = useState<externalProductType[]>([])
+    const { presentedProducts, isLoading: isProductsLoading } = usePresentationProductsContext()
     const [isLoading, setIsLoading] = useState(false)
-
     const [isAnnulerModalOpen, setIsAnnulerModalOpen] = useState(false)
     const [isValiderModalOpen, setIsValiderModalOpen] = useState(false)
 
@@ -39,7 +33,6 @@ export default function IndexScreen() {
         handleRemoveSelectedAppointment()
         setIsValiderModalOpen(!isValiderModalOpen)
         router.replace("/(main)/(tabs)/Appointments")
-
     }
 
     const handleAnnulerButtonClick = () => {

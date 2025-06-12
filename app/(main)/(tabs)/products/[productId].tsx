@@ -87,7 +87,8 @@ const productPresentation = () => {
                             toggleModal={toggleValiderModal}
                             onCancelPress={() => setIsValiderModalOpen(false)}
                             onAcceptPress={handleValidatePresentation}
-                            cancelBtnText={t("validate-modal-accept-button-title")}
+                            cancelBtnText={t("validate-modal-cancel-button-title")}
+                            acceptBtnText={t("validate-modal-accept-button-title")}
                             title={t("validate-modal-title")}
                             description={t("validate-modal-description")}
                         >

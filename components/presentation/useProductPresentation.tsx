@@ -132,15 +132,28 @@ export const useProductPresentation = () => {
         router.back()
     }
 
-    const calculateSlidesFeedbackRating = () => {
-        if (!presentedProduct) return 0
+    useEffect(() => {
+        console.log("presentation render");
+        SlidesInteractionTracker.startSyncing()
+        
+        return () => {
+            console.log("presentation cleanup")
+                    SlidesInteractionTracker.syncInteractions()
+            setTimeout(() => {
+                SlidesInteractionTracker.stopSyncing();
+            }, 500);
+        }
+    }, [])
 
-        const feedback = presentedProduct.productSlides.filter((slide) => slide.feedback)
-            .map(slide => slide.feedback === 2 ? 2.5 : slide.feedback)
+    // const calculateSlidesFeedbackRating = () => {
+    //     if (!presentedProduct) return 0
+
+    //     const feedback = presentedProduct.productSlides.filter((slide) => slide.feedback)
+    //         .map(slide => slide.feedback === 2 ? 2.5 : slide.feedback)
             
-        // return feedback.reduce((a, b) => a + b, 0) / feedback.length
-        return calcAverageOfArray(feedback)
-    }
+    //     // return feedback.reduce((a, b) => a + b, 0) / feedback.length
+    //     return calcAverageOfArray(feedback)
+    // }
 
     // const updateLocalProductPresentationSummary = () => {
     //     const feedback = calculateSlidesFeedbackRating()

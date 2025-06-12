@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Modal } from 'react-native'
 import React from 'react'
-import Modal from 'react-native-modal'
+// import Modal from 'react-native-modal'
 import AnnulerButton from '@/components/ui/buttons/AnnulerButton';
 import ValiderButton from '@/components/ui/buttons/ValiderButton';
 import colors from '@/styles/colors';
 import { globalStyles } from '@/styles/globalStyles';
+import Backdrop from '../Backdrop';
 
 interface PropTypes {
     title?: string
@@ -34,11 +35,18 @@ const ActionModal = ({
 
     return (
         <Modal
+            transparent
+            visible={isModalOpen}
+            animationType="fade"
+        >
+        {/* <Modal
             isVisible={isModalOpen}
             onBackdropPress={toggleModal}
             animationInTiming={1} animationOutTiming={1}
-        >
-            <View className=' bg-white mx-auto py-4 px-5 gap-y-8 max-w-xl rounded-xl'>
+            hasBackdrop={false}
+        > */}
+            <Backdrop visible={isModalOpen} onPress={toggleModal} />
+            <View className='sticky top-[50%] translate-y-[-50%] bg-white mx-auto py-4 px-5 gap-y-8 max-w-xl rounded-xl'>
                 <Text
                     style={[styles.textLg]}
                     className='self-start border-b-4 border-b-secondary'
@@ -83,6 +91,16 @@ const styles = StyleSheet.create({
         ...globalStyles.roboto,
         fontSize: 16,
     },
+    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    modal: {
+        backgroundColor: 'white',
+        // padding: 20,
+        // borderRadius: 10,
+        alignSelf: 'center',
+        elevation: 5,
+    },
 })
+
+
 
 export default ActionModal

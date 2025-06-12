@@ -18,16 +18,15 @@ const useSlideTimeTracker = (
         // console.log("child render")
         startTimer()
 
-        AppState.addEventListener('change', async (nextAppState) => {
-            if (nextAppState === 'background' || nextAppState === 'inactive') {
-                console.log(`app going to background or inactive...`)
-                stopTimer()
-                SlidesInteractionTracker.syncInteractions()
-            }
-        })
+        // AppState.addEventListener('change', async (nextAppState) => {
+        //     if (nextAppState === 'background' || nextAppState === 'inactive') {
+        //         console.log(`app going to background or inactive...`)
+        //         stopTimer()
+        //         SlidesInteractionTracker.syncInteractions()
+        //     }
+        // })
 
         return () => {
-            // console.log("child clean up")
             stopTimer() // stop and set time spent on slide change
             updateLocalProductPresentationSummary()
         }

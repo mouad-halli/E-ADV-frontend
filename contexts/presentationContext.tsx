@@ -1,5 +1,4 @@
 import { productPresentationType } from "@/types/productPresentation"
-import { useGlobalSearchParams, useLocalSearchParams } from "expo-router"
 import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from "react"
 import { useAppContext } from "./appContext"
 import { ProductPresentationStatus, usePresentationProductsContext } from "./presentationProductsContext"
@@ -18,6 +17,7 @@ type presentationContextType = {
     handleSetSlideComment: (slideId: string, comment: string) => void
     handleSetSlideTimeSpent: (slideId: string, timeSpent: number) => void
     updateLocalProductPresentationSummary: () => void
+    handleSetSelectedProductId: (productId: string) => void
 }
 
 const presentationContext = createContext<presentationContextType>({} as presentationContextType)
@@ -28,8 +28,6 @@ type presentationProviderProps = { children: ReactNode }
 
 export const PresentationProvider : FC<presentationProviderProps> = ({ children }) => {
 
-    const { productId } = useGlobalSearchParams()
-    
     const {
         getSelectedAppointmentId,
         isAppointmentSelected,
@@ -43,8 +41,11 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
     const [isLoading, setIsLoading] = useState(false)
     const [slideStartIndex, setSlideStartIndex] = useState(0)
     const [productSlides, setProductSlides] = useState<externalProductSlide[]>([])
+    const [selectedProductId, setSelectedProductId] = useState<string | undefined>()
 
-        const handleSetSlideComment = (slideId: string, comment: string) => {
+    const handleSetSelectedProductId = (productId: string) => setSelectedProductId(productId)
+
+    const handleSetSlideComment = (slideId: string, comment: string) => {
         // console.log('setting comment for slide {', selectedProduct.slides.findIndex(slide => slide.id === slideId) + 1, "} ", comment);
 
         // if a comment is added we go trough presentedProduct.slides to find the slide and update it
@@ -114,6 +115,11 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
     }
 
     const updateLocalProductPresentationSummary = () => {
+        console.log("updating product summary")
+        // SlidesInteractionTracker.syncInteractions()
+        // setTimeout(() => {
+        //     SlidesInteractionTracker.stopSyncing();
+        // }, 500);
         let presentationStatus = ProductPresentationStatus.NOT_PRESENTED
 
         if (presentedProduct?.productSlides.every(slide => slide.timeSpent >= 3 || slide.timeSpent === -1))
@@ -123,11 +129,12 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
 
         if (presentationStatus !== ProductPresentationStatus.NOT_PRESENTED)
             updateProductPresentationData(
-                String(productId),
+                String(selectedProductId),
                 calculateSlidesFeedbackRating(),
                 new Date().toLocaleDateString(),
                 presentationStatus
             )
+        setSelectedProductId(undefined)
     }
 
     useEffect(() => {
@@ -138,9 +145,9 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
                 //TO BE REMOVED LATER: mocking slides data
                 // const slides: externalProductSlide[] = await getProductSlides(String(productId))
                 const slides: externalProductSlide[] = productSlidesMockData
-                let responseBody = await getProductPresentation(selectedAppointmentId, String(productId))
+                let responseBody = await getProductPresentation(selectedAppointmentId, String(selectedProductId))
                 if (!responseBody.productPresentation) {
-                    responseBody = await addProductPresentation(selectedAppointmentId, String(productId), slides)
+                    responseBody = await addProductPresentation(selectedAppointmentId, String(selectedProductId), slides)
                 }
                 
                 if (responseBody.slideIdToContinueFrom) {
@@ -166,18 +173,26 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             }
         }
             
-        if (isAppointmentSelected() && productId ) {
+        if (isAppointmentSelected() && selectedProductId ) {
+            console.log("fetching product presentation data")
             fetchData()
-            SlidesInteractionTracker.startSyncing()
+            // SlidesInteractionTracker.startSyncing()
         }
+        // else {
+        //     console.log("reinitializing product presentation data");
+        //     setPresentedProduct(undefined)
+        //     setProductSlides([])
+        //     setSlideStartIndex(0)
+        // }
 
-        return () => {
-            setTimeout(async () => {
-                SlidesInteractionTracker.syncInteractions()
-                SlidesInteractionTracker.stopSyncing();
-            }, 500);
-        }
-    }, [productId, getSelectedAppointmentId()])
+        // return () => {
+        //     console.log("presentationContext clean up called")
+        //     // setTimeout(async () => {
+        //     //     SlidesInteractionTracker.syncInteractions()
+        //     //     SlidesInteractionTracker.stopSyncing();
+        //     // }, 500);
+        // }
+    }, [selectedProductId/*, getSelectedAppointmentId()*/])
 
     const value = useMemo(
         () => ({
@@ -189,6 +204,7 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             handleSetSlideFeedback,
             handleSetSlideTimeSpent,
             updateLocalProductPresentationSummary,
+            handleSetSelectedProductId
         })
         , [
             presentedProduct,
@@ -199,6 +215,8 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             handleSetSlideComment,
             handleSetSlideTimeSpent,
             updateLocalProductPresentationSummary,
+            handleSetSelectedProductId,
+            selectedProductId,
         ]
     )
 

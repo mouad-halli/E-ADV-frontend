@@ -3,8 +3,8 @@
         "search-input-placeholder": "search by name",
         "date-title": "Date",
         "territory-title": "Territory",
-        "not-visited.title": "not visited",
-        "apply-button-title": "apply"
+        "not-visited.title": "Not visited",
+        "apply-button-title": "Apply"
     },
     "table": {
         "name": "Name",

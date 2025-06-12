@@ -17,7 +17,8 @@ const Comments = ({productSlides}: PropTypes) => {
                 <View style={styles.commentContainer}>
                     <View style={styles.commentHeader}>
                         <Text style={[styles.commentHeaderText, globalStyles.roboto]} >
-                            Slide {productSlides.findIndex(slide => String(slide.id) === String(item.slideId)) + 1}
+                            {/* Slide {productSlides.findIndex(slide => String(slide.id) === String(item.slideId)) + 1} */}
+                            Slide {item.orderNumber}
                         </Text>
                     </View>
                     <View style={styles.comment}>

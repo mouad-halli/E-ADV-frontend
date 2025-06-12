@@ -18,7 +18,7 @@ i18n
 				navbar: require('@/locales/en/navbar.json'),
 				appointments: require('@/locales/en/appointments.json'),
 				products: require('@/locales/en/products.json'),
-				presentation: require('@/locales/en/common.json'),
+				presentation: require('@/locales/en/presentation.json'),
 				common: require('@/locales/en/presentation.json'),
 			},
 	    	fr: {
