@@ -32,7 +32,7 @@ const SlidesPlayer = ({
     const [isPaused, setIsPaused] = useState(false)
     const {
         pauseTimer,
-        resumeTimer
+        resumeTimer,
     } = useSlideTimeTracker(currentSlideIndex, slides, presentedProduct?.productSlides, setTimeSpent)
 
     const handleEnterPress = (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {

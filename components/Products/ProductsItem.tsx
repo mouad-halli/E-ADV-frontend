@@ -5,14 +5,8 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget'
 import PlayIcon from '../ui/icons/PlayIcon';
 import ReplayIcon from "../ui/icons/ReplayIcon";
 import Checkmark from '../ui/icons/Checkmark';
-import { useEffect, useState } from "react";
-import { useAppContext } from "@/contexts/appContext";
 import { router } from "expo-router";
-import $api from '@/services/Api/API';
-import LoadingScreen from "../LoadingScreen";
-import { externalProductType } from "@/types/productPresentation";
 import { presentedProductType } from "@/contexts/presentationProductsContext";
-import { usePresentationContext } from "@/contexts/presentationContext";
 
 interface PropTypes {
     product: presentedProductType
@@ -20,10 +14,7 @@ interface PropTypes {
 
 const ProductsItem = ({ product }: PropTypes) => {
 
-    const { handleSetSelectedProductId } = usePresentationContext()
-
     const handlePress = () => {
-        handleSetSelectedProductId(product.id)
         router.push({
             pathname: "/(main)/(tabs)/products/[productId]",
             params: { productId: product.id }

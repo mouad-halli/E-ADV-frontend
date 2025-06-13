@@ -24,7 +24,6 @@ const productPresentation = () => {
         handleSetFeedbackRating, handleValidatePresentation,
         setIsTheaterMode, setIsAnnulerModalOpen, isAnnulerModalOpen, setIsValiderModalOpen,
         isValiderModalOpen, generalFeedback, generalComment,
-        slideStartIndex,
     } = useProductPresentation()
 
     const {presentedProduct, isLoading} = usePresentationContext()

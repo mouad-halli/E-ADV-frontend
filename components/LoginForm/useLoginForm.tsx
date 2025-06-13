@@ -2,13 +2,16 @@ import { useState } from 'react'
 import { useUserContext } from '@/contexts/userContext';
 import { useRouter } from 'expo-router';
 import { AccessTokenRequestConfig, exchangeCodeAsync, makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
-import { msalLogin } from '@/services/Api/authentication';
+import { login, msalLogin } from '@/services/Api/authentication';
 
 const useLoginForm = () => {
 
     const { handleUpdateUser } = useUserContext()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     const discovery = useAutoDiscovery(
         `https://login.microsoftonline.com/${process.env.EXPO_PUBLIC_TENANT_ID}/v2.0`,
@@ -32,8 +35,19 @@ const useLoginForm = () => {
         discovery,
     )
 
-    const handleLoginButtonPress = () => {
-        router.replace('/(main)/(tabs)')
+    const handleLoginButtonPress = async () => {
+        // router.replace('/(main)/(tabs)')
+        try {
+            setIsLoading(true)
+            const user = await login({email, password})
+            handleUpdateUser(user)
+            setIsLoading(false)    
+        } catch (error: any) {
+            const errResponse = (error && error.response && error.response.data) || (error && error.message)
+
+            console.error(errResponse)
+            setIsLoading(false)
+        }
     }
 
     const handleMicrosoftLoginButtonPress = async () => {
@@ -74,6 +88,7 @@ const useLoginForm = () => {
         isLoading,
         handleMicrosoftLoginButtonPress,
         handleLoginButtonPress,
+        email, setEmail, password, setPassword
     }
 }
 

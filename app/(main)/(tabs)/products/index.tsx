@@ -146,19 +146,6 @@ export default function IndexScreen() {
                             </Text>
                         </View>
                     </View>
-                    {/* <View className="flex-row justify-around">
-                        {(["name", "speciality", "contact", "city", "workPlace"]).map((field) => (
-                            <View key={field} className="gap-y-1 my-3">
-                                <Text style={[Styles.textLg, { fontSize: 16 }]}>{field}</Text>
-                                <Text
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
-                                    style={[Styles.text, { maxWidth: 170}]}>
-                                    {selectedAppointment.doctor[field as keyof typeof selectedAppointment.doctor]}
-                                </Text>
-                            </View>
-                        ))}
-                    </View> */}
                 </View>
                 {!isLoading && !isProductsLoading ?
                     <ProductsList

@@ -4,7 +4,6 @@ import { StyleSheet, View, Text } from 'react-native';
 import colors from '@/styles/colors';
 import { globalStyles } from '@/styles/globalStyles';
 import useDataTable from './useDataTable';
-import LoadingScreen from '../LoadingScreen';
 import AntDesign from '@expo/vector-icons/build/AntDesign';
 import { appointment } from './useAppointments';
 import { useTranslation } from 'react-i18next';
@@ -55,11 +54,12 @@ const AppDataTable = ({
                     <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{appointment.doctor.workPlace}</DataTable.Cell>
                     <DataTable.Cell textStyle={[appointment.isVisited ? styles.visitedAppointmentRowText : styles.text]}>{new Date(appointment.appointmentDate).toLocaleDateString()}</DataTable.Cell>
                     <DataTable.Cell textStyle={[styles.text]}>
-                        <AntDesign
+                        {/* <AntDesign
                             name={appointment.isVisited ? "check" : "close"}
                             color={appointment.isVisited ? "green" : "black" }
                             size={24}
-                        />
+                        /> */}
+                        {appointment.isVisited && <AntDesign name={"check"} color={"green"} size={24} />}
                     </DataTable.Cell>
                 </DataTable.Row>
             ))} 

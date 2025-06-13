@@ -77,14 +77,14 @@ const useAppointments = (
             const appointments: externalAppointmentType[] = appointmentsMockData
             if (!Array.isArray(appointments))
                 return
-            const result: appointment[] = []
-            await Promise.all(appointments.map(async (appointment) => {
+            const result: appointment[] = await Promise.all(appointments.map(async (appointment) => {
                 try {
                     const isVisited = await isAppointmentVisited(appointment.id)
-                    result.push({...appointment, isVisited})
+                    return {...appointment, isVisited}
                 } catch (error: any) {
                     const errResponse = (error?.response?.data) || error?.message
                     console.log(errResponse)
+                    return {...appointment, isVisited: false}
                 }
             }))
             setAppointmentsList(result)
@@ -104,7 +104,7 @@ const useAppointments = (
             fetchAppointments()
         }, [])
     )
-    
+
     return {
         searchText,
         setSearchText,

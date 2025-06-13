@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next'
 
 const LoginForm = () => {
 
+    const { t } = useTranslation('login')
+
     const {
         passwordVisibility,
         rightIcon,
@@ -23,9 +25,8 @@ const LoginForm = () => {
         isLoading,
         handleMicrosoftLoginButtonPress,
         handleLoginButtonPress,
+        email, setEmail, password, setPassword
     } = useLoginForm()
-
-    const { t } = useTranslation('login')
 
     return (
         <View className='h-full w-[40%]'>
@@ -52,23 +53,27 @@ const LoginForm = () => {
                                 placeholderTextColor={colors.primary}
                                 numberOfLines={1}
                                 editable={!isLoading}
+                                value={email}
+                                onChangeText={setEmail}
                             />
                         </View>
                         <View className='gap-y-2'>
                             <Text style={[globalStyles.robotoMedium]} className='text-xl text-primary'>{t("login-form.input2-title")}</Text>
                             <View className='w-full h-min flex-row items-center border-2 border-accent rounded-lg'>
-                              <TextInput
-                                  style={[globalStyles.roboto]}
-                                  className='w-11/12 text-primary px-4 py-4'
-                                  placeholder={t("login-form.input2-placeholder")}
-                                  placeholderTextColor={colors.primary}
-                                  secureTextEntry={passwordVisibility}
-                                  numberOfLines={1}
-                                  editable={!isLoading}
-                              />
-                              <Pressable className='w-1/12' onPress={handlePasswordVisibility}>
-                                  <MaterialCommunityIcons name={rightIcon} size={22} color="#1e3a8a" />
-                              </Pressable>
+                                <TextInput
+                                    style={[globalStyles.roboto]}
+                                    className='w-11/12 text-primary px-4 py-4'
+                                    placeholder={t("login-form.input2-placeholder")}
+                                    placeholderTextColor={colors.primary}
+                                    secureTextEntry={passwordVisibility}
+                                    numberOfLines={1}
+                                    editable={!isLoading}
+                                    value={password}
+                                    onChangeText={setPassword}
+                                />
+                                <Pressable className='w-1/12' onPress={handlePasswordVisibility}>
+                                    <MaterialCommunityIcons name={rightIcon} size={22} color="#1e3a8a" />
+                                </Pressable>
                             </View>
                             <Text
                               style={[globalStyles.roboto]}

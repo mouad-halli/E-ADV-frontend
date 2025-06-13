@@ -10,7 +10,7 @@ const useSlideTimeTracker = (
     presentedSlides: productSlideType[] | undefined,
     setTimeSpent: (slideId: string, timeSpent: number) => void
 ) => {
-    const { updateLocalProductPresentationSummary } = usePresentationContext()
+    const { endPresentation } = usePresentationContext()
     const startTimeRef = useRef<number | null>(null)
     const [isPaused, setIsPaused] = useState(false)
 
@@ -28,9 +28,15 @@ const useSlideTimeTracker = (
 
         return () => {
             stopTimer() // stop and set time spent on slide change
-            updateLocalProductPresentationSummary()
+            // updateLocalProductPresentationSummary()
         }
     }, [currentSlideIndex])
+
+    useEffect(() => {
+        return () => {
+            endPresentation()
+        }
+    }, [])
 
 
     const startTimer = () => {
@@ -53,7 +59,7 @@ const useSlideTimeTracker = (
                     if (timeToSeconds >= 3) {
                         slide.timeSpent += timeToSeconds
                         setTimeSpent(slideId, timeToSeconds)
-                        SlidesInteractionTracker.saveProductSlideToStorage(slide)
+                        // SlidesInteractionTracker.saveProductSlideToStorage(slide)
                     }
                 }
             }

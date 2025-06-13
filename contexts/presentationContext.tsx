@@ -7,6 +7,7 @@ import productSlidesMockData from '@/locales/mockData/productSlides.json'
 import { addProductPresentation, getProductPresentation } from "@/services/Api/productPresentation"
 import { SlidesInteractionTracker } from "@/services/SlidesInteractionTracker"
 import { calcAverageOfArray } from "@/utils/calculations"
+import { useGlobalSearchParams } from "expo-router"
 
 type presentationContextType = {
     presentedProduct: productPresentationType | undefined
@@ -17,7 +18,7 @@ type presentationContextType = {
     handleSetSlideComment: (slideId: string, comment: string) => void
     handleSetSlideTimeSpent: (slideId: string, timeSpent: number) => void
     updateLocalProductPresentationSummary: () => void
-    handleSetSelectedProductId: (productId: string) => void
+    endPresentation: () => void
 }
 
 const presentationContext = createContext<presentationContextType>({} as presentationContextType)
@@ -36,14 +37,13 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
     const {
         updateProductPresentationData
     } = usePresentationProductsContext()
+
+    const { productId } = useGlobalSearchParams()
     
     const [presentedProduct, setPresentedProduct] = useState<productPresentationType>()
     const [isLoading, setIsLoading] = useState(false)
     const [slideStartIndex, setSlideStartIndex] = useState(0)
     const [productSlides, setProductSlides] = useState<externalProductSlide[]>([])
-    const [selectedProductId, setSelectedProductId] = useState<string | undefined>()
-
-    const handleSetSelectedProductId = (productId: string) => setSelectedProductId(productId)
 
     const handleSetSlideComment = (slideId: string, comment: string) => {
         // console.log('setting comment for slide {', selectedProduct.slides.findIndex(slide => slide.id === slideId) + 1, "} ", comment);
@@ -99,6 +99,12 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
                 }
                 return slide
             })
+            console.log(updatedSlides.map(s => s.comment));
+            
+            const slide = updatedSlides.find(slide => String(slide.slideId) === String(slideId))
+
+            if (slide)
+                SlidesInteractionTracker.saveProductSlideToStorage(slide)
 
             return { ...prevPresentedProduct, productSlides: updatedSlides }
         })
@@ -122,32 +128,45 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
         // }, 500);
         let presentationStatus = ProductPresentationStatus.NOT_PRESENTED
 
+        // console.log("local -> ", presentedProduct?.productSlides.map(slide => slide.timeSpent))
+        console.log("local -> ", presentedProduct?.productSlides.map(s => s.timeSpent))
+
         if (presentedProduct?.productSlides.every(slide => slide.timeSpent >= 3 || slide.timeSpent === -1))
             presentationStatus = ProductPresentationStatus.PRESENTED
         else if (presentedProduct?.productSlides.some(slide => slide.timeSpent >= 3 || slide.timeSpent === -1))
             presentationStatus = ProductPresentationStatus.CONTINUE
 
+        console.log(`status is -> ${presentationStatus}`)
+
         if (presentationStatus !== ProductPresentationStatus.NOT_PRESENTED)
             updateProductPresentationData(
-                String(selectedProductId),
+                String(productId),
                 calculateSlidesFeedbackRating(),
                 new Date().toLocaleDateString(),
                 presentationStatus
             )
-        setSelectedProductId(undefined)
+    }
+
+    const endPresentation = () => {
+        updateLocalProductPresentationSummary()
+        setPresentedProduct(undefined)
+        setProductSlides([])
+        setSlideStartIndex(0)
     }
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log("fetching presentation ....");
+            
             try {
                 setIsLoading(true)
                 const selectedAppointmentId = getSelectedAppointmentId()
                 //TO BE REMOVED LATER: mocking slides data
                 // const slides: externalProductSlide[] = await getProductSlides(String(productId))
                 const slides: externalProductSlide[] = productSlidesMockData
-                let responseBody = await getProductPresentation(selectedAppointmentId, String(selectedProductId))
+                let responseBody = await getProductPresentation(selectedAppointmentId, String(productId))
                 if (!responseBody.productPresentation) {
-                    responseBody = await addProductPresentation(selectedAppointmentId, String(selectedProductId), slides)
+                    responseBody = await addProductPresentation(selectedAppointmentId, String(productId), slides)
                 }
                 
                 if (responseBody.slideIdToContinueFrom) {
@@ -158,12 +177,13 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
                 else
                     setSlideStartIndex(0)
 
-                console.log("slide -> ", responseBody.slideIdToContinueFrom)
-                
                 if (slides)
                     setProductSlides(slides)
-                if (responseBody.productPresentation)
+                if (responseBody.productPresentation) {
+                    responseBody.productPresentation.productSlides.sort((a, b) => a.orderNumber - b.orderNumber)
+                    console.log("initial -> ", responseBody.productPresentation.productSlides.map(s => s.timeSpent))
                     setPresentedProduct(responseBody.productPresentation)
+                }
                 setIsLoading(false)
                 
             } catch (error: any) {
@@ -173,26 +193,12 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             }
         }
             
-        if (isAppointmentSelected() && selectedProductId ) {
-            console.log("fetching product presentation data")
+        if (isAppointmentSelected() && productId ) {
             fetchData()
-            // SlidesInteractionTracker.startSyncing()
+        //     SlidesInteractionTracker.startSyncing()
         }
-        // else {
-        //     console.log("reinitializing product presentation data");
-        //     setPresentedProduct(undefined)
-        //     setProductSlides([])
-        //     setSlideStartIndex(0)
-        // }
 
-        // return () => {
-        //     console.log("presentationContext clean up called")
-        //     // setTimeout(async () => {
-        //     //     SlidesInteractionTracker.syncInteractions()
-        //     //     SlidesInteractionTracker.stopSyncing();
-        //     // }, 500);
-        // }
-    }, [selectedProductId/*, getSelectedAppointmentId()*/])
+    }, [productId/*, getSelectedAppointmentId()*/])
 
     const value = useMemo(
         () => ({
@@ -204,7 +210,7 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             handleSetSlideFeedback,
             handleSetSlideTimeSpent,
             updateLocalProductPresentationSummary,
-            handleSetSelectedProductId
+            endPresentation,
         })
         , [
             presentedProduct,
@@ -215,8 +221,7 @@ export const PresentationProvider : FC<presentationProviderProps> = ({ children 
             handleSetSlideComment,
             handleSetSlideTimeSpent,
             updateLocalProductPresentationSummary,
-            handleSetSelectedProductId,
-            selectedProductId,
+            endPresentation,
         ]
     )
 
